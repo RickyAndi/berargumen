@@ -119,7 +119,7 @@ describe('Card component', function() {
 	it('get right id of card as element id', function() {
 		var $cardComponentElement = $(vmA.$el);
 		var elementIdFromDOM = $cardComponentElement.find('.panel').attr('id');
-		expect(elementIdFromDOM).o.equal(cardInstance.getId());
+		expect(elementIdFromDOM).to.equal(cardInstance.getId());
 	})
 
 	it('get right type text depend on card model type on its DOM', function() {
