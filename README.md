@@ -8,6 +8,9 @@ Berargumen is real time argument mapping platform
 - enter the repo folder
 - run `npm install` or `yarn install` 
 - make sure mongodb server have been started
+- make sure gulp installed globally
+- run `gulp`
+- run `gulp copy-css`
 - run `npm start`
 
 # test
