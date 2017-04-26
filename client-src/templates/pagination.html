@@ -1,0 +1,5 @@
+<ul class="pagination">
+	<li v-for="page in numberOfPages" v-bind:class="{ 'active' : currentPage == page }" v-if="!notDisplayPaginationButton(page)">
+		<a @click="goToPage(page)">{{ page }}</a>
+	</li>
+</ul>

@@ -1,0 +1,30 @@
+<div 
+	@click="selectThisCard()" 
+	v-bind:class="classObject"
+	v-bind:style="styleObject"
+	class="panel" 
+	style="position: absolute; width: 300px;"
+	v-bind:id="card.getId()"
+>
+    <div v-if="card.getType() != 'co-premise-connector'"  class="panel-heading">
+        <div class="row">
+            <div class="col-md-6">
+            	<span class="card-type">{{ cardTextType }}</span>
+            </div>
+            <div class="col-md-6">
+                
+            </div>
+        </div>
+    </div>
+    <div v-if="card.getType() != 'co-premise-connector'" class="panel-body" style=" min-height: 100px;">
+        <p class="card-content">{{ card.getContent() }}</p>
+    </div>
+    
+    <div v-if="card.getType() == 'co-premise-connector'" class="panel-body co-premise-connector">
+        Konektor
+    </div>
+    
+    <div v-if="card.getType() != 'co-premise-connector'"  class="panel-footer">
+    	<button class="btn btn-default btn-xs card-creator-name">{{ card.getCreatorName() }}</button>
+    </div>
+</div>

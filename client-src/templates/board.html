@@ -1,0 +1,114 @@
+<div class="col-md-12">
+	<div class="panel panel-defaul" v-bind:class="{ 'current-user-board' : board.belongsToCurrentUser() }">
+		<div class="panel-body board-panel">
+			<div class="row">
+				<div class="col-md-2">
+					<div class="row">
+						<div class="col-md-12 text-center">
+							<img v-bind:src="board.getUserProfilePictureUrl()" class="img-circle" width="120" height="120">
+						</div>
+						<div class="col-md-12 text-center">
+							<h5 class="board-username"><strong>{{ board.getUserName() }}</strong></h5>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="board-tags">
+								<button v-for="tag in board.getTags()" class="btn btn-default btn-xs button-tags">{{ tag }}</button>
+							</div>
+
+							<h3>
+								<strong>
+									<a href="#"><span class="board-title">{{ board.getTitle() }}</span> - <span class="board-topic">{{ board.getTopic() }}</span></a>
+								</strong>
+							</h3>
+							<div class="board-spec" style="margin-bottom: 10px;">
+								<button class="btn btn-success-basic btn-xs reason-count">{{ board.getCountOfReason() + ' Alasan' }}</button>
+								<button class="btn btn-danger-basic btn-xs objection-count">{{ board.getCountOfObjection() + ' Keberatan' }}</button>
+								<button class="btn btn-warning-basic btn-xs rebuttal-count">{{ board.getCountOfRebuttal() + ' Bantahan' }}</button>
+								<button @click="showCollaborators()" class="btn btn-primary-basic btn-xs button-collaborators collaborators-count">{{ board.getCountOfCollaborators() + ' Kolaborator' }}</button>	
+							</div>
+							<p v-if="!board.isDescriptionTooLong()" class="board-description">{{ board.getDescription() }}</p>
+							<p v-if="board.isDescriptionTooLong() && !viewFullDescription" class="board-description">
+								{{ board.getExcerptDescription() }} <span style="color: blue;" @click="seeFullDescription()"><strong>...Lihat semua</strong></span>
+							</p>	
+							<p v-if="board.isDescriptionTooLong() && viewFullDescription" class="board-description">
+								{{ board.getDescription() }} <span style="color: blue;" @click="seeLessDescription()"><strong>...Lihat sedikit</strong></span>
+							</p>	
+						</div>
+						
+						<div class="col-md-12" v-if="isCurrentUserLoggedIn">
+							<div class="row">
+								<div class="col-md-6">
+									
+									<button v-if="!board.currentUserUpvoted()" class="btn btn-default btn-sm upvote-button" @click="upvote()">
+										<span class="glyphicon glyphicon-thumbs-up"></span>
+										<span class="upvote-count">{{ board.getUpvote() }}</span>
+									</button>
+									
+									<button v-if="board.currentUserUpvoted()" class="btn btn-success btn-sm remove-upvote-button voted" @click="removeUpvote()">
+										<span class="glyphicon glyphicon-thumbs-up"></span>
+										<span class="upvote-count">{{ board.getUpvote() }}</span>
+									</button>
+									
+									<button v-if="board.currentUserDownvoted()" class="btn btn-danger btn-sm remove-downvote-button voted" @click="removeDownvote()">
+										<span class="glyphicon glyphicon-thumbs-down"></span>
+										<span class="downvote-count">{{ board.getDownvote() }}</span>
+									</button>
+									
+									<button v-if="!board.currentUserDownvoted()" class="btn btn-default btn-sm  downvote-button" @click="downvote()">
+										<span class="glyphicon glyphicon-thumbs-down"></span>
+										<span class="downvote-count">{{ board.getDownvote() }}</span>
+									</button>
+
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-12" v-if="!isCurrentUserLoggedIn">
+							<div class="row">
+								<div class="col-md-6">
+									
+									<button @click="voteUpButNotLoggedIn()" title="Anda harus masuk untuk vote up" class="upvote-disabled-button btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-thumbs-up"></span>
+										<span class="upvote">{{ board.getUpvote() }}</span>
+									</button>
+
+									<button @click="voteDownButNotLoggedIn()" title="Anda harus masuk untuk vote up" class="downvote-disabled-button btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-thumbs-down"></span>
+										<span class="upvote">{{ board.getDownvote() }}</span>
+									</button>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="row">
+						<div class="col-md-12 owner-buttons" v-if="board.belongsToCurrentUser()">
+							<button @click="changeBoard()" class="btn btn-success btn-block btn-xs">
+								<span class="glyphicon glyphicon-pencil"></span>
+								Ubah
+							</button>
+							<button @click="deleteBoard()" class="btn btn-danger btn-block btn-xs">
+								<span class="glyphicon glyphicon-remove"></span>
+								Hapus
+							</button>
+							<button v-if="!board.published()" @click="publishBoard()" class="btn btn-primary btn-block btn-xs">
+								<span class="glyphicon glyphicon-list"></span>
+								Publish
+							</button>
+							<button @click="unpublishBoard()" v-if="board.published()" class="btn btn-warning btn-block btn-xs">
+								<span class="glyphicon glyphicon-list"></span>
+								Sembunyikan
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,14 @@
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" v-bind:id="uniqId">
+	<div class="modal-dialog" v-bind:class="classObject" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4>{{ title }}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<slot></slot>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

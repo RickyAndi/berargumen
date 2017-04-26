@@ -1,0 +1,42 @@
+<div class="col-sm-12 col-xs-12">
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-sm-12 col-xs-12">
+					<img v-bind:src="board.getProfilePictureUrl()" width="20px" height="20px" class="img-circle">
+					-
+					<span>{{ board.getUserName() }}</span>
+				</div>
+				<div class="col-sm-12 col-xs-12" style="margin-top: 10px;">
+					<span style="font-size: 22px;"><strong>{{ board.getTitle() }}</strong></span>
+					<span style="font-size: 22px;"><strong>({{ board.getTopic() }})</strong></span>
+				</div>
+				<div class="col-sm-12 col-xs-12" style="margin-top: 5px;">
+					<button class="btn btn-xs btn-success btn-spec">{{ board.getCountOfAlasan() + 'Alasan' }}</button>
+					<button class="btn btn-xs btn-danger btn-spec">{{ board.getCountOfObjection() + ' Keberatan' }}</button>
+					<button class="btn btn-xs btn-warning btn-spec">{{ board.getCountOfRebuttal() + ' Bantahan' }}</button>
+					<button class="btn btn-xs btn-info btn-spec">{{ board.getCountOfCollaborators() + ' Kolaborator' }}</button>
+				</div>
+				<div class="col-sm-12 col-xs-12" style="margin-top: 5px;">
+					<p>{{ board.getDescription() }}</p>
+				</div>
+
+				<div class="col-sm-12 col-xs-12" style="margin-top: 5px;" v-if="isCurrentUserLoggedIn">
+					
+					<button @click="upvote()" v-if="!board.currentUserUpvoted()" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-thumbs-up"></span>{{ board.getUpvote() }}</button>
+					<button @click="removeUpvote()" v-if="board.currentUserUpvoted()" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-thumbs-up"></span>{{ board.getUpvote() }}</button>
+
+					<button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-thumbs-down"></span>{{ board.getDownvote() }}</button>
+					<button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-thumbs-down"></span>{{ board.getDownvote() }}</button>
+
+				</div>
+
+				<div class="col-sm-12 col-xs-12" style="margin-top: 5px;" v-if="!isCurrentUserLoggedIn">
+					<button class="btn btn-success btn-sm"><span class="glyphicon glyphicon-thumbs-up"></span>{{ board.getUpvote() }}</button>
+					<button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-thumbs-down"></span>{{ board.getDownvote() }}</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

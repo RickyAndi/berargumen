@@ -1,0 +1,17 @@
+<div class="panel panel-default panel-menu">
+	<div class="panel-heading">
+		<div class="row">
+			<div class="col-md-6">
+				<strong>Topik Board</strong>
+			</div>
+			<div class="col-md-6">
+				<button @click="selectTopic()" class="btn btn-primary btn-sm">Terapkan Topik</button>
+			</div>
+		</div>
+	</div>
+	<div class="panel-body board-topic">
+		<p v-for="topic in topics">
+			<input type="checkbox" v-model="topic.selected"> {{ topic.name }}
+		</p>
+	</div>
+</div>
