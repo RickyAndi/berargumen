@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Scrolling Nav - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/builds/css/bootstrap.css">
+    <link rel="stylesheet" href="/builds/css/grab-to-pan.css">
+    
+    <style>
+        
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        
+
+        .scrollable {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            max-width: 2000px;
+            max-height: 2000px;
+            background-color: #EEE;
+        }
+
+        .filler {
+            height: 10000px;
+            width: 10000px;
+            position: relative;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        /* Change the link color to #111 (black) on hover */
+        li a:hover {
+            background-color: #111;
+        }
+
+        .menu-list {
+            margin-top: 10px;
+            margin-left: 5px;
+            margin-right: 5px;
+            margin-bottom: 10px;
+        }
+
+        .selected-card {
+            border: solid 2px blue;
+        }
+
+    </style>
+</head>
+
+<body>
+    
+    <span id="app">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="padding: 0px; margin-right: 0px; margin-left: 0px;">
+            <div class="container-fluid" style="padding-right: 0px; padding-left: 0px;">
+                <ul>
+                    <li class="menu-list"><button @click="zoomIn()" style="width: 100%; height: 100%" class="btn btn-default btn-sm btn-block"><span class="glyphicon glyphicon-zoom-in"></span></button></li>
+                    <li class="menu-list"><button @click="zoomOut()" style="width: 100%; height: 100%" class="btn btn-default btn-sm btn-block"><span class="glyphicon glyphicon-zoom-out"></span></button></li>
+                    <li class="menu-list"><button @click="zoomOut()" style="width: 100%; height: 100%" class="btn btn-default btn-sm btn-block">Kesimpulan</button></li>
+                    <li class="menu-list"><button style="width: 100%; height: 100%" class="btn btn-default btn-sm btn-block">{{ zoomScale }}</button></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="scrollable" id="scrollale-container">
+            <div class="filler" id="jsplumb-container">
+                <div  @click="chooseThis(1)" v-bind:class="{ 'selected-card': selectedCardIndex == 1 }" id="panel1" class="panel panel-success" style="position: absolute; left: 200px; top: 200px; width: 300px;">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6">
+                                
+                            </div>
+                            <div class="col-md-6">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style=" min-height: 100px;">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione soluta cum repellat, officia iure quam architecto sapiente, eos nemo obcaecati odit? Hic quibusdam vero, nihil ea dolore excepturi ullam eveniet.</p>
+                    </div>
+                    <div class="panel-footer">
+                       
+                    </div>
+                </div>
+
+                <div @click="chooseThis(2)" id="panel2" class="panel panel-success" v-bind:class="{ 'selected-card': selectedCardIndex == 2 }" style="position: absolute; left: 200px; top: 200px; width: 300px;">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6">
+                                
+                            </div>
+                            <div class="col-md-6">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style=" min-height: 100px;">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione soluta cum repellat, officia iure quam architecto sapiente, eos nemo obcaecati odit? Hic quibusdam vero, nihil ea dolore excepturi ullam eveniet.</p>
+                    </div>
+                    <div class="panel-footer">
+                       
+                    </div>
+                </div>
+
+                <div @click="chooseThis(3)" id="panel3" class="panel panel-success" v-bind:class="{ 'selected-card': selectedCardIndex == 2 }" style="position: absolute; left: 500px; top: 500px; width: 300px;">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6">
+                                
+                            </div>
+                            <div class="col-md-6">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style=" min-height: 100px;">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione soluta cum repellat, officia iure quam architecto sapiente, eos nemo obcaecati odit? Hic quibusdam vero, nihil ea dolore excepturi ullam eveniet.</p>
+                    </div>
+                    <div class="panel-footer">
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+    
+    <script src="builds/js/board-desktop.js"></script>
+</body>
+
+</html>
