@@ -1,43 +1,43 @@
-var Vue = require('vue');
+const Vue = require('vue');
+const getIncrementDecrement = require('get-increment-decrement').getIncrementDecrement; 
+const OddNumber = require('../object_values/odd-number');
 
-var pagination = Vue.component('pagination', {
-	template : 
-	`
-		<ul class="pagination">
-			<li v-for="page in numberOfPages" v-bind:class="{ 'active' : currentPage == page }" v-if="!notDisplayPaginationButton(page)">
-				<a @click="goToPage(page)">{{ page }}</a>
-			</li>
-		</ul>
-	`,
-	props : {
-		changePageEventName : {
-			type : String,
-			required : true
-		},
-		currentPage : {
-			type : Number,
-			required : true
-		},
-		numberOfPages : {
-			type : Number,
-			required : true
-		},
-		numberOfPaginationDisplayed : {
-			type : Number,
-			required : true
-		} 
-	},
-	methods : {
-		goToPage : function(page) {
-			this.$emit('page-change', { 
-				pageName : this.changePageEventName, 
-				page : page 
-			})
-		},
-		notDisplayPaginationButton : function(page) {
-			return (this.currentPage - (this.numberOfPaginationDisplayed - 1)) > page || (this.currentPage + (this.numberOfPaginationDisplayed - 1)) < page  
-		},
-	}
+const pagination = Vue.component('pagination', {
+  template : require('../templates/pagination.html'),
+  props : {
+    currentPage : {
+      type : Number,
+      required : true
+    },
+    numberOfPages : {
+      type : Number,
+      required : true
+    },
+    numberOfPaginationDisplayed : {
+      type : OddNumber,
+      required : true
+    } 
+  },
+  methods : {
+    goToPage(page) {
+      this.$emit('page-change', {
+        page : page 
+      })
+    },
+    notDisplayPaginationButton(page) {
+      return this.getPaginationNumberArray().find((displayedPageNumber) => {
+        return page == displayedPageNumber;
+      }) == undefined;
+    },
+    getPaginationNumberArray() {
+      return getIncrementDecrement({
+        startNumber : this.currentPage,
+        lengthNeeded : this.numberOfPaginationDisplayed.getResultOfDivisionAfterSubstractionByOne(),
+        minimumLimit : 1,
+        maximumLimit : this.numberOfPages
+      });
+    }
+  }
 })
 
 module.exports = pagination;

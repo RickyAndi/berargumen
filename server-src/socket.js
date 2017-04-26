@@ -1,17 +1,15 @@
-var socket = require('socket.io');
+const socket = require('socket.io');
 
 module.exports = function(server) {
-	var io = socket(server);
+  const io = socket(server);
 
-	var card = io.of('/card');
-	
-	card.on('connection', function(socket) {
-		socket.on('send-message', function(data) {
-			console.log(data.message)
-		})
-	})
+  const card = io.of('/card');
+  
+  card.on('connection', socket => {
 
-	return {
-		card : card
-	}
-}
+  });
+
+  return {
+    card : card
+  };
+};

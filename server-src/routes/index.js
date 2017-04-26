@@ -1,13 +1,18 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const router = express.Router()
+const MobileDetect = require('mobile-detect');
 
-module.exports = function(sockets) {
-	router.get('/', function (req, res) {
+module.exports = sockets => {
+  router.get('/', (req, res) => {
+    //res.render('index-mobile.ejs');   
+    // const md = new MobileDetect(req.headers['user-agent']);
 
-		sockets.card.emit('user-visited');
-		
-	  	res.render('index.ejs');
-	})
+    // if(md.mobile()) {
+    //  res.render('index-mobile.ejs'); 
+    // }
+    
+    res.render('index.ejs');
+  })
 
-	return router;
+  return router;
 }

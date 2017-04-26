@@ -1,21 +1,24 @@
-function Relation() {
-	this.toCardId = null;
-	this.type = null;
-}
+class Relation {
+	constructor() {
+		this.toCardId = null;
+		this.type = null;
+	}
 
-Relation.prototype = {
-	setToCardId : function(cardId) {
+	setToCardId(cardId) {
 		this.toCardId = cardId;
 		return this;
-	},
-	getToCardId : function() {
+	}
+
+	getToCardId() {
 		return this.toCardId;
-	},
-	setType : function(type) {
+	}
+
+	setType(type) {
 		this.type = type;
 		return this;
-	},
-	getType : function() {
+	}
+
+	getType() {
 		return this.type;
 	}
 }

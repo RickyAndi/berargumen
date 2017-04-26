@@ -2,116 +2,176 @@ var expect = require('chai').expect;
 var Board = require('./../../models/board');
 
 describe('Board Model', function() {
-	
-	var fakeUser = {
-		name : 'Budiman',
-		profilePictureUrl : 'http://google.com',
-		getName : function() {
-			return this.name;
-		},
-		getProfilePictureUrl : function() {
-			return this.profilePictureUrl;
-		}
-	}
+  
+  var fakeUser = {
+    name : 'Budiman',
+    profilePictureUrl : 'http://google.com',
+    getName : function() {
+      return this.name;
+    },
+    getProfilePictureUrl : function() {
+      return this.profilePictureUrl;
+    }
+  }
 
-	var fakeCollaborators = [
-		{
-			name : 'Budiman',
-			profilePictureUrl : 'http://google.com',
-			getName : function() {
-				return this.name;
-			},
-			getProfilePictureUrl : function() {
-				return this.profilePictureUrl;
-			}		
-		},
-		{
-			name : 'Ilham Mansiz',
-			profilePictureUrl : 'http://duckduckgo.com',
-			getName : function() {
-				return this.name;
-			},
-			getProfilePictureUrl : function() {
-				return this.profilePictureUrl;
-			}
-		}
-	];
+  var fakeCollaborators = [
+    {
+      name : 'Budiman',
+      profilePictureUrl : 'http://google.com',
+      getName : function() {
+        return this.name;
+      },
+      getProfilePictureUrl : function() {
+        return this.profilePictureUrl;
+      }   
+    },
+    {
+      name : 'Ilham Mansiz',
+      profilePictureUrl : 'http://duckduckgo.com',
+      getName : function() {
+        return this.name;
+      },
+      getProfilePictureUrl : function() {
+        return this.profilePictureUrl;
+      }
+    }
+  ];
 
-	var boardInstanceA,boardInstanceB;
+  var boardData = {
+    id : 'abcdefghijklmn',
+    title : 'aku adalah anak gembala',
+    description : 'lorem ipsum dolor',
+    user : fakeUser,
+    countOfReason : 10,
+    countOfObjection : 20,
+    countOfRebuttal : 25,
+    collaborators : fakeCollaborators,
+    tags : ['aku', 'adalah', 'anak'],
+    topic : 'Universe',
+    downvote : 100,
+    upvote : 20,
+    isCurrentUserUpvoted : false,
+    isCurrentUserDownvoted : false
+  }
 
-	before(function() {
-		boardInstanceA = new Board();
-		boardInstanceB = new Board();
-	})
+  var boardInstanceA,boardInstanceB;
 
-	it('can set id and get id', function() {
-		boardInstanceA.setId('kjskldusydusyuidysuiidy');
-		expect(boardInstanceA.getId()).to.equal('kjskldusydusyuidysuiidy')
-	})
+  before(function() {
+    boardInstanceA = new Board();
+    boardInstanceB = new Board();
+  })
 
-	it('can set title and get title', function() {
-		boardInstanceA.setTitle('Lorem Ipsum Dolor')
-		expect(boardInstanceA.getTitle()).to.equal('Lorem Ipsum Dolor')
-	});
+  it('can set id and get id', function() {
+    boardInstanceA.setId(boardData.id);
+    expect(boardInstanceA.getId()).to.equal(boardData.id)
+  })
 
-	it('can set description and get description', function() {
-		boardInstanceA.setDescription('Lorem Ipsum Dolor')
-		expect(boardInstanceA.getDescription()).to.equal('Lorem Ipsum Dolor')
-	});
+  it('can set title and get title', function() {
+    boardInstanceA.setTitle(boardData.title)
+    expect(boardInstanceA.getTitle()).to.equal(boardData.title)
+  });
 
-	it('can set user and get its user data', function() {
-		boardInstanceA.setUser(fakeUser);
-		expect(boardInstanceA.getUserName()).to.equal('Budiman');
-		expect(boardInstanceA.getUserProfilePictureUrl()).to.equal('http://google.com');
-	});
+  it('can set description and get description', function() {
+    boardInstanceA.setDescription(boardData.description)
+    expect(boardInstanceA.getDescription()).to.equal(boardData.description)
+  });
 
-	it('it get false if user is set', function() {
-		expect(boardInstanceA.isUserNull()).to.equal(false);
-	})
+  it('can set user and get its user data', function() {
+    boardInstanceA.setUser(boardData.user);
+    expect(boardInstanceA.getUserName()).to.equal(boardData.user.getName());
+    expect(boardInstanceA.getUserProfilePictureUrl()).to.equal(boardData.user.getProfilePictureUrl());
+  });
 
-	it('it get true if user is set', function() {
-		expect(boardInstanceB.isUserNull()).to.equal(true);
-	})
+  it('it get false if user is set', function() {
+    expect(boardInstanceA.isUserNull()).to.equal(false);
+  })
 
-	it('can set collaborators and get count', function() {
-		boardInstanceA.setCollaborators(fakeCollaborators);
-		expect(boardInstanceA.getCountOfCollaborators()).to.equal(fakeCollaborators.length);
-	})
+  it('it get true if user is set', function() {
+    expect(boardInstanceB.isUserNull()).to.equal(true);
+  })
 
-	it('can set count of reason and get it', function(){
-		boardInstanceA.setCountOfReason(10);
-		expect(boardInstanceA.getCountOfReason()).to.equal(10);
-	})
+  it('can set collaborators and get count', function() {
+    boardInstanceA.setCollaborators(boardData.collaborators);
+    expect(boardInstanceA.getCountOfCollaborators()).to.equal(boardData.collaborators.length);
+  })
 
-	it('can set count of objection and get it', function(){
-		boardInstanceA.setCountOfObjection(20);
-		expect(boardInstanceA.getCountOfObjection()).to.equal(20);
-	})
+  it('can set count of reason and get it', function(){
+    boardInstanceA.setCountOfReason(boardData.countOfReason);
+    expect(boardInstanceA.getCountOfReason()).to.equal(boardData.countOfReason);
+  })
 
-	it('can set count of rebuttal and get it', function(){
-		boardInstanceA.setCountOfRebuttal(23);
-		expect(boardInstanceA.getCountOfRebuttal()).to.equal(23);
-	})
+  it('can set count of objection and get it', function(){
+    boardInstanceA.setCountOfObjection(boardData.countOfObjection);
+    expect(boardInstanceA.getCountOfObjection()).to.equal(boardData.countOfObjection);
+  })
 
-	it('can set tags and get tags', function() {
-		var tags = ['bumi', 'bulat', 'mama'];
-		boardInstanceA.setTags(tags);
-		expect(boardInstanceA.getTags()).to.equal(tags);
-	})
+  it('can set count of rebuttal and get it', function(){
+    boardInstanceA.setCountOfRebuttal(boardData.countOfRebuttal);
+    expect(boardInstanceA.getCountOfRebuttal()).to.equal(boardData.countOfRebuttal);
+  })
 
-	it('can set topic and retrieve it', function() {
-		var topic = 'Science';
-		boardInstanceA.setTopic(topic);
-		expect(boardInstanceA.getTopic()).to.equal(topic);
-	})
+  it('can set tags and get tags', function() {
+    var tags = ['bumi', 'bulat', 'mama'];
+    boardInstanceA.setTags(boardData.tags);
+    expect(boardInstanceA.getTags()).to.equal(boardData.tags);
+  })
 
-	describe('if user is not set', function() {
-		it('return empty string when get its user name', function() {
-			expect(boardInstanceB.getUserName()).to.equal('');
-		})
+  it('can set topic and retrieve it', function() {
+    boardInstanceA.setTopic(boardData.topic);
+    expect(boardInstanceA.getTopic()).to.equal(boardData.topic);
+  })
 
-		it('return empty string when get its user profile picture url', function() {
-			expect(boardInstanceB.getUserProfilePictureUrl()).to.equal('');
-		})
-	})
+  describe('board upvoted state by current user', function() {
+    it('if not set, will return false', function() {
+      expect(boardInstanceA.currentUserUpvoted()).to.equal(false);
+    })
+
+    it('can set and retrieve it', function() {
+      var isCurrentUserUpvoted = true;
+      boardInstanceA.setIsCurrentUserUpvoted(isCurrentUserUpvoted);
+    })
+  })
+
+  describe('board downvoted state by current user', function() {
+    it('if not set, will return false', function() {
+      expect(boardInstanceA.currentUserDownvoted()).to.equal(false);
+    })
+
+    it('can set and retrieve it', function() {
+      var isCurrentUserDownvoted = true;
+      boardInstanceA.setIsCurrentUserDownvoted(isCurrentUserDownvoted);
+    })
+  })
+
+  describe('board belongs to current user', function() {
+    it('if not set, will return false', function() {
+      expect(boardInstanceA.belongsToCurrentUser()).to.equal(false);
+    })
+
+    it('can set and retrieve it', function() {
+      var isBelongToCurrentUser = true;
+      boardInstanceA.setIsBelongToCurrentUser(isBelongToCurrentUser);
+    })
+  })
+
+  describe('board published', function() {
+    it('if not set, will return false', function() {
+      expect(boardInstanceA.published()).to.equal(false);
+    })
+
+    it('can set and retrieve it', function() {
+      var isPublished = true;
+      boardInstanceA.setIsPublished(isPublished);
+    })
+  })
+
+  describe('if user is not set', function() {
+    it('return empty string when get its user name', function() {
+      expect(boardInstanceB.getUserName()).to.equal('');
+    })
+
+    it('return empty string when get its user profile picture url', function() {
+      expect(boardInstanceB.getUserProfilePictureUrl()).to.equal('');
+    })
+  })
 })

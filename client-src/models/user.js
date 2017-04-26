@@ -1,31 +1,36 @@
-function User() {
-	this.id = null;
-	this.name = null;
-	this.profilePictureUrl = null;
-}
+class User {
+  constructor() {
+    this.id = null;
+    this.name = null;
+    this.profilePictureUrl = null;
+  }
 
-User.prototype = {
-	setId : function(id) {
-		this.id = id;
-		return this;
-	},
-	getId : function() {
-		return this.id;
-	},
-	setName : function(name) {
-		this.name = name;
-		return this;
-	},
-	getName : function() {
-		return this.name;
-	},
-	setProfilePictureUrl : function(profilePictureUrl) {
-		this.profilePictureUrl = profilePictureUrl;
-		return this;
-	},
-	getProfilePictureUrl : function() {
-		return this.profilePictureUrl;
-	}
+  setId(id) {
+    this.id = id;
+    return this;
+  }
+  
+  getId() {
+    return this.id;
+  }
+
+  setName(name) {
+    this.name = name;
+    return this;
+  }
+
+  getName() {
+    return this.name;
+  }
+  
+  setProfilePictureUrl(profilePictureUrl) {
+    this.profilePictureUrl = profilePictureUrl;
+    return this;
+  }
+
+  getProfilePictureUrl() {
+    return this.profilePictureUrl;
+  }
 }
 
 module.exports = User;
