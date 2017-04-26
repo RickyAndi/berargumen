@@ -10,6 +10,6 @@ app.use('/api', apiRoute);
 app.use('/', indexRoute);
 app.use('/board', boardRoute);
 
-server.listen(3000, function() {
+server.listen(3000, () => {
   console.log('App Listen On Port 3000')
 });
