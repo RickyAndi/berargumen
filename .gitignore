@@ -1,2 +1,5 @@
 /public/builds
 /node_modules
+/reports
+npm-debug.log
+selenium-debug.log
