@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Document</title>
+	<link rel="stylesheet" href="/builds/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/builds/css/nprogress.css">
+	<link rel="stylesheet" href="/builds/css/alertify.min.css">
+	<link rel="stylesheet" href="/builds/css/bootstrap.rtl.css">
+	<link rel="stylesheet" href="/builds/css/taggle.css">
+
+	<style>
+		.no-margin-no-padding {
+			margin-left: 0px !important;
+			margin-right: 0px !important;
+			padding-left: 0px !important;
+			padding-right: 0px !important;
+		}
+		.no-margin-no-padding > button {
+			border-radius: 0px !important;
+			border: solid 1px black;
+			height: 30px;
+		}
+		
+		* {
+		    -webkit-box-sizing: border-box;
+		    -moz-box-sizing: border-box;
+		    box-sizing: border-box;
+		}
+		
+		.scrollable {
+		    overflow: scroll;
+		    width: 100%;
+		    height: 100%;
+		    max-width: 2000px;
+		    max-height: 2000px;
+		    background-color: #EEE;
+		}
+
+		.filler {
+		    height: 10000px;
+		    width: 10000px;
+		    position: relative;
+		}
+
+		ul {
+		    list-style-type: none;
+		    margin: 0;
+		    padding: 0;
+		    overflow: hidden;
+		    background-color: #333;
+		}
+
+		li {
+		    float: left;
+		}
+
+		li a {
+		    display: block;
+		    color: white;
+		    text-align: center;
+		    padding: 14px 16px;
+		    text-decoration: none;
+		}
+
+		/* Change the link color to #111 (black) on hover */
+		li a:hover {
+		    background-color: #111;
+		}
+
+		.menu-list {
+		    margin-top: 10px;
+		    margin-left: 5px;
+		    margin-right: 5px;
+		    margin-bottom: 10px;
+		}
+
+		.selected-card {
+		    border: solid 2px blue;
+		}
+		
+		.button-menu {
+			height : 50px !important;
+		}
+		
+		/* .modal-fullscreen */
+
+		.modal-fullscreen {
+			background: transparent;
+		}
+		.modal-fullscreen .modal-content {
+		  	background: transparent;
+		  	border: 0;
+		  	-webkit-box-shadow: none;
+		  	box-shadow: none;
+		}
+		.modal-backdrop.modal-backdrop-fullscreen {
+		  	background: #ffffff;
+		}
+		.modal-backdrop.modal-backdrop-fullscreen.in {
+			opacity: .97;
+		  	filter: alpha(opacity=97);
+		}
+
+		.modal-fullscreen .modal-dialog {
+			margin: 0;
+		  	margin-right: auto;
+		  	margin-left: auto;
+		  	width: 100%;
+		}
+		
+		@media (min-width: 768px) {
+			.modal-fullscreen .modal-dialog {
+		    	width: 750px;
+		  	}
+		}
+		@media (min-width: 992px) {
+		  	.modal-fullscreen .modal-dialog {
+		    	width: 970px;
+		  	}
+		}
+
+		@media (min-width: 1200px) {
+		  	.modal-fullscreen .modal-dialog {
+		   		width: 1170px;
+		  	}
+		}
+
+		@media (min-width: 300px) {
+			.button-menu {
+				font-size: 11px;
+				font-weight: 900;
+				padding-right: 0px;
+				padding-left: 0px;
+			}
+			
+			.btn-spec {
+				font-size: 10px;
+			}
+		}
+
+		@media (min-width: 500px) {
+			.button-menu {
+				font-size: 15px;
+				font-weight: 600;
+			}
+
+			.btn-spec {
+				font-size: 13px;
+			}
+		}
+
+		.taggle_placeholder {
+			left: 25px !important;
+			color: #949494;
+		}
+
+		#tagsinput {
+			padding-top: 7px !important;
+			overflow-y: auto;
+		}
+
+		.taggle_list {
+			padding-left : 5px;
+			background-color: white;
+		}
+
+	</style>
+
+</head>
+<body>
+	<section id="app">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="padding: 0px; margin-right: 0px; margin-left: 0px;">
+		    <div class="container-fluid" style="padding-right: 0px; padding-left: 0px;">
+		        <ul>
+		            <li class="menu-list"><button @click="zoomIn()" style="width: 100%; height: 100%; padding: 0px; background-color: #333; color : white; border-color: #333; font-size: 18px;" class="btn btn-default btn-sm btn-block"><span id="app-title"><strong>Berargumen</strong></span></button></li>
+		        </ul>
+		    </div>
+		</nav>
+		<div class="container-fluid" style="margin-top: 49px;">
+			<div class="row" style="position: static;">
+				<div class="col-md-2 col-xs-2 col-ms-2 no-margin-no-padding" style="z-index: 1000;">
+					<button v-bind:class="{ 'btn-default' : currentBoardCategory != 'bookmarked-board', 'btn-success' : currentBoardCategory == 'bookmarked-board'  }" @click="changeBoardDisplayedCategory('bookmarked-board')" class="btn btn-block button-menu">Ditandai</button>
+				</div>
+				<div class="col-md-2 col-xs-2 col-ms-2 no-margin-no-padding" style="z-index: 1000;">
+					<button v-bind:class="{ 'btn-default' : currentBoardCategory != 'new-board', 'btn-success' : currentBoardCategory == 'new-board'  }" @click="changeBoardDisplayedCategory('new-board')" class="btn btn-block button-menu">Baru</button>
+				</div>
+				<div class="col-md-2 col-xs-2 col-ms-2 no-margin-no-padding" style="z-index: 1000;">
+					<button v-bind:class="{ 'btn-default' : currentBoardCategory != 'top-board', 'btn-success' : currentBoardCategory == 'top-board'  }" @click="changeBoardDisplayedCategory('top-board')" class="btn btn-block button-menu">Top</button>
+				</div>
+				<div class="col-md-2 col-xs-2 col-ms-2 no-margin-no-padding" style="z-index: 1000;">
+					<button v-bind:class="{ 'btn-default' : currentBoardCategory != 'my-board', 'btn-success' : currentBoardCategory == 'my-board'  }" @click="changeBoardDisplayedCategory('my-board')" class="btn btn-block button-menu">Saya</button>
+				</div>
+				<div class="col-md-2 col-xs-2 col-ms-2 no-margin-no-padding" style="z-index: 1000;">
+					<button v-bind:class="{ 'btn-default' : currentBoardCategory != 'collaborated-board', 'btn-success' : currentBoardCategory == 'collaborated-board'  }" @click="changeBoardDisplayedCategory('collaborated-board')" class="btn btn-block button-menu">Kolaborasi</button>
+				</div>
+				<div class="col-md-2 col-xs-2 col-ms-2 no-margin-no-padding" style="z-index: 1000;">
+					<button v-bind:class="{ 'btn-default' : currentBoardCategory != 'profile', 'btn-success' : currentBoardCategory == 'profile'  }" @click="changeBoardDisplayedCategory('profile')" class="btn btn-block button-menu">Profile</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-10 col-sm-10 col-sm-offset-1 col-xs-offset-1" style="margin-top: 10px;">
+					<label for="">Cari berdasar judul, deskripsi, dan tag</label>
+					<input type="text" class="form-control" placeholder="Cari board">
+				</div>
+				<div class="col-xs-10 col-sm-10 col-sm-offset-1 col-xs-offset-1" style="margin-top: 10px;">
+					<label for="">Pilih Topik Board</label>
+					<select name="" id="" class="form-control">
+						<option value="Semua">Semua</option>
+						<option value="Agama">Agama</option>
+						<option value="Filsafat">Filsafat</option>
+						<option value="Politik">Politik</option>
+						<option value="Ekonomi">Ekonomi</option>
+						<option value="Sosial">Sosial</option>
+						<option value="Seni">Seni</option>
+						<option value="Sains">Sains</option>
+						<option value="Pemrograman">Pemrograman</option>
+						<option value="Manusia">Manusia</option>
+						<option value="Hewan">Hewan</option>
+						<option value="Metafisika">Metafisika</option>
+						<option value="Ideologi">Ideologi</option>
+						<option value="Alam Semesta">Alam semesta</option>
+						<option value="Teknologi">Teknologi</option>
+						<option value="Hidup">Hidup</option>
+						<option value="Mati">Mati</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="container" style="margin-top: 25px;">
+			<div class="row">
+				<div class="col-sm-12 col-xs-12">
+					<span style="font-size: 25px;"><strong>{{ boardCategoryText }}</strong></span>
+				</div>
+			</div>
+		</div>
+		<div class="container" style="margin-top: 25px;" v-if="currentBoardCategory != 'profile'">
+			<div class="row">
+				<div class="col-sm-12 col-xs-12">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-12 col-xs-12">
+									<img src="https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542" width="20px" height="20px" class="img-circle">
+									-
+									<span>Almakno Akiuji</span>
+								</div>
+								<div class="col-sm-12 col-xs-12" style="margin-top: 10px;">
+									<span style="font-size: 22px;"><strong>Hello World</strong></span>
+									<span style="font-size: 22px;"><strong>(Topik)</strong></span>
+								</div>
+								<div class="col-sm-12 col-xs-12" style="margin-top: 5px;">
+									<button class="btn btn-xs btn-success btn-spec">20 Alasan</button>
+									<button class="btn btn-xs btn-danger btn-spec">10 Keberatan</button>
+									<button class="btn btn-xs btn-warning btn-spec">10 Bantahan</button>
+									<button class="btn btn-xs btn-info btn-spec">10 Kolaborator</button>
+								</div>
+								<div class="col-sm-12 col-xs-12" style="margin-top: 5px;">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora natus ratione sequi quaerat necessitatibus nam illo quod at eius, non ipsam impedit quas, quasi et rerum accusamus quis delectus? Laudantium.</p>
+								</div>
+								<div class="col-sm-12 col-xs-12" style="margin-top: 5px;">
+									<div class="pull-left">
+										<button class="btn btn-success btn-sm"><span class="glyphicon glyphicon-thumbs-up"></span> 100</button>
+										<button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-thumbs-down"></span> 100</button>
+									</div>
+									<div class="pull-right">
+										<button class="btn btn-info btn-sm" @click="showSubmitBoardModal()">
+											<span class="glyphicon glyphicon-list"></span>
+											Menu
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container" style="margin-top: 25px;" v-if="currentBoardCategory == 'profile'">
+			<div class="row">
+				<div class="col-sm-12 col-sm-12">
+					<h3>Profile Page</h3>
+				</div>
+			</div>
+		</div>
+		<fullscreen-modal v-bind:uniq-id="'full-modal'" v-bind:title="'Buat Board'" ref="fullModal">
+			<div class="col-sm-12 col-sm-12">
+				<div class="pull-right">
+					<button class="btn btn-success btn-sm">Simpan Board</button>
+					<button class="btn btn-danger btn-sm" @click="hideSubmitBoardModal()">Tutup</button>
+				</div>
+			</div>
+			<div class="col-sm-12 col-sm-12" style="margin-top: 30px;">
+				<div class="form-group">
+					<label for="">Judul Board</label>
+					<input type="text" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="description">Deskripsi Board</label>
+					<textarea class="form-control" name="description" id="" cols="30" rows="10"></textarea>
+				</div>
+			</div>
+			<div class="col-sm-12 col-xs-12">
+				<div class="row">
+					<div class="col-sm-12 col-xs-12">
+						<strong>Tags</strong>
+					</div>
+					<div class="col-sm-12 col-xs-12" style="margin-top: 5px;">
+						<div style="border: solid 1px #cccccc; min-height: 150px;" id="tagsinput"></div>	
+					</div>
+					<div class="col-sm-12 col-xs-12">
+						<span>Untuk menambah tags, masukan kata lalu tekan enter</span>
+					</div>
+				</div>
+			</div>
+		</fullscreen-modal>
+
+	</section>
+	
+	<script src="builds/js/index-mobile.js"></script>
+</body>
+</html>
