@@ -1,11 +1,15 @@
-var app = require('./server-src/app');
-var server = require('http').Server(app);
-var sockets  = require('./server-src/socket')(server);
+const app = require('./server-src/app');
+const server = require('http').Server(app);
+const sockets  = require('./server-src/socket')(server);
 
-var indexRoute = require('./server-src/routes/index')(sockets);
+const indexRoute = require('./server-src/routes/index')(sockets);
+const apiRoute = require('./server-src/routes/api')(sockets);
+const boardRoute = require('./server-src/routes/board')(sockets);
 
+app.use('/api', apiRoute);
 app.use('/', indexRoute);
+app.use('/board', boardRoute);
 
 server.listen(3000, function() {
-	console.log('App Listen On Port 3000')
+  console.log('App Listen On Port 3000')
 });
