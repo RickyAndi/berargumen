@@ -1,0 +1,12 @@
+{
+  "appPort" : 3000,
+  "dbName" : "berargumen",
+  "secretSession" : "keyboardCat",
+  "facebookApp" : {
+    "clientId" : "",
+    "clientSecret" : "",
+    "callbackUrl" : "",
+    "profileFields" : [
+    ]
+  }
+}
