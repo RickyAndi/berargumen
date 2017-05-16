@@ -18,6 +18,8 @@ const secretSession = config.secretSession;
 
 mongoose.connect('mongodb://localhost/' + dbName);
 
+require('./server-src/models/require-models')();
+
 app.use(session({ 
   secret: secretSession, 
   resave: true, 
@@ -39,6 +41,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function() {
   server.listen(appPort, () => {
-    console.log('App Listen On Port' + appPort)
+    console.log('App Listen On Port ' + appPort)
   });
 });
