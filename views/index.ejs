@@ -6,14 +6,9 @@
 	<title>Berargumen</title>
 
 	<link rel="stylesheet" href="/builds/css/bootstrap.css">
-	<link rel="stylesheet" href="/builds/css/smt-bootstrap.css">
 	<link rel="stylesheet" href="/builds/css/taggle.css">
 	
 	<style>
-		.panel-body {
-			border-radius: 1000px;
-		}
-
 		footer{
 			background: rgb(23,30,38);
 			padding: 60px 20px;
@@ -104,10 +99,6 @@
 			color: white;
 			border: solid 1px #337ab7;
 		}
-
-		.current-user-board {
-			border: solid 2px #449d44;
-		}
 		
 		div.bootstrap-tagsinput {
 			float:right; 
@@ -134,7 +125,7 @@
 		}
 
 		body {
-			background-color: #dddfe2;
+			background-color: white;
 			padding-top: 65px;
 		}
 
@@ -147,6 +138,8 @@
 			max-height: 800px;
 			overflow-y: scroll;
 			padding : 5px;
+			margin-top: 30px;
+			margin-bottom: 50px;
 		}
 
 		.search-input {
@@ -190,228 +183,262 @@
 		.board-panel {
 			min-height: 250px;
 		}
+
+		[v-cloak] {
+			display: none;
+		}
 		
+		.fade-enter-active, .fade-leave-active {
+		  transition: opacity .5s
+		}
+		.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+		  opacity: 0
+		}
+
+		.create-argument-button {
+        	margin-top: 5px;
+        }
+
+		.creator-image-box-text {
+            display : inline-block;
+            padding-top: 1px;
+            margin-top: 0px;
+            margin-left: 10px;
+        }
+
+        .creator-image-box {
+            margin-top: 20px;
+        }
+
+		.creator-image {
+            position: relative;
+            top: -17px;
+            display : inline-block;
+        }
+
+		.search-input {
+            width: 500px !important;
+            margin-left: 150px !important;
+        }
+
+		 .reason-count {
+            color : black;
+            border: solid 2px green;
+            padding: 3px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .objection-count {
+            color : black;
+            border: solid 2px red;
+            padding: 3px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .rebuttal-count {
+            color : black;
+            border: solid 2px orange;
+            padding: 3px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        .board-spec {
+            display : inline-block;
+            font-weight : 800;
+        }
+
+        .arguers-count {
+            color : black;
+            border: solid 2px blue;
+            padding: 3px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+		.board-description-box {
+			margin-top: 20px;
+		}
+
+		.menu-button-box {
+			margin-top: 20px;
+		}
+
+		.board-description p {
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+		.brand {
+            font-weight: 900;
+            font-size: 23px;
+            color: white;
+        }
+
+		.board-title-box {
+			margin-top: 20px;
+		}
+
 	</style>
 
 	
 </head>
 <body>
 	<span id="app">
-		<nav class="navbar navbar-inverse navbar-fixed-top">
-		    <div class="container">
-		        <div class="navbar-header">
-		        	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-			            <span class="sr-only">Toggle navigation</span>
-			            <span class="icon-bar"></span>
-			            <span class="icon-bar"></span>
-			            <span class="icon-bar"></span>
-		          	</button>
-		          	<a class="navbar-brand" href="#">
-		          		<span id="app-title" style="font-size: 25px; color: white;"><strong>Berargumen</strong></span>
-		          	</a>
-		        </div>
-		        <div id="navbar" class="navbar-collapse collapse">
-		          	<ul class="nav navbar-nav">
-			            <li><a href="#">Tentang Berargumen</a></li>
-		          	</ul>
-	  	          	<ul class="nav navbar-nav navbar-right">
-	  	          	</ul>	
-		        </div><!--/.nav-collapse -->
-		    </div>
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapsible">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">
+						<span class="brand">Berargumen</span>
+					</a>
+				</div>
+
+				<div class="navbar-collapse collapse" id="navbar-collapsible">
+					<div class="navbar-form navbar-right btn-group">
+						<button @click="showLoginModal()" class="btn btn-default">Login</button>
+					</div>
+
+					<form class="navbar-form">
+						<div class="form-group" style="display:inline;">
+							<div class="input-group">
+								<input @keyup="setSearchQuery($event)" placeholder="Cari argumen berdasar judul, deskripsi, dan tag" class="form-control search-input" type="text">
+								<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
 		</nav>
 		
 		<!-- new -->
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12">
-					<pagination-component
-						:current-page="privateState.getCurrentPage()"
-						:number-of-pages="privateState.getTotalPages()"
-						:number-of-pagination-displayed="meta.numberOfPaginationDisplayed"
-						@page-change="changePage"
-					>
-					</pagination-component>
-				</div>
-				<div class="col-md-12">
+				<div class="col-md-3">
 					<div class="row">
-						<div class="col-md-9">
-
-							<div class="row" style="margin-bottom: 20px;">
-								<div class="col-md-12">
-									<input @keyup="setSearchQuery($event)" type="text" class="form-control" placeholder="Cari board berdasar Judul, Deskripsi, dan Tag">
+						<div class="col-md-12">
+							<div class="panel panel-default panel-menu">
+								<div class="panel-heading">
+									Pilih Kategori Board
 								</div>
-							</div>
-							
-							<div class="row board-list-container" v-if="!privateState.getLoadingState()">
-								<board-component v-for="(board, index) in privateState.getBoards()" 
-									:board="board" 
-									:key="board.getId()"
-									:index="index"
-									:is-current-user-logged-in="privateState.getUserLoginState()"
-									@vote-but-not-logged-in="voteButNotLoggedIn"
-									@show-collaborator="showCollaborators"
-									@change-board="showSubmitBoardModalToEdit"
-									@delete-board="showDeleteModalConfirmation"
-									@publish-board="publishBoard"
-									@unpublish-board="unpublishBoard"
-								>
-								</board-component>
-							</div>
+								<div class="panel-body">
+									<button 
+										v-bind:disabled="privateState.getLoadingState()"
+										
+										@click="setCurrentBoardCategory(privateState.boardCategory.ALL)" 
+										
+										v-bind:class="{ 'btn-primary' : privateState.getCurrentBoardCategory() == 'all-board', 'btn-default' : privateState.getCurrentBoardCategory() != 'all-board' }"
 
-							<div class="row" style="background-color: white;" v-if="privateState.getLoadingState()">
-								<div class="col-md-12 text-center" style="padding: 50px;">
-									<img width="140px" height="140px" src="/builds/css/circle-loading.gif" alt="">
+										class="btn btn-block btn-sm"		
+									>
+										<strong>
+											<span>Semua Argumen</span>
+										</strong>
+									</button>
+									<button 
+										v-bind:disabled="privateState.getLoadingState()"
+
+										@click="setCurrentBoardCategory(privateState.boardCategory.MY)" 
+										
+										v-bind:class="{ 'btn-primary' : privateState.getCurrentBoardCategory() == 'my-board', 'btn-default' : privateState.getCurrentBoardCategory() != 'my-board' }"
+
+										class="btn btn-block btn-sm"
+									>
+										<strong>
+											<span>Argumen yang saya buat</span>
+										</strong>
+									</button>
+									<button 
+										v-bind:disabled="privateState.getLoadingState()"
+
+										@click="setCurrentBoardCategory(privateState.boardCategory.COLLABORATED)"
+										
+										v-bind:class="{ 'btn-primary' : privateState.getCurrentBoardCategory() == 'collaborated-board', 'btn-default' : privateState.getCurrentBoardCategory() != 'collaborated-board' }"
+
+										class="btn btn-block btn-sm"
+									>
+										<strong>
+											<span>Argumen yang saya ikuti</span>
+										</strong>
+									</button>
+									<button 
+										v-bind:disabled="privateState.getLoadingState()"
+										
+										@click="setCurrentBoardCategory(privateState.boardCategory.BOOKMARKED)" 
+										
+										v-bind:class="{ 'btn-primary' : privateState.getCurrentBoardCategory() == 'bookmarked-board', 'btn-default' : privateState.getCurrentBoardCategory() != 'bookmarked-board' }"
+
+										class="btn btn-block btn-sm"
+									>
+										<strong>
+											<span>Argumen yang saya tandai</span>
+										</strong>
+									</button>
 								</div>
 							</div>
 						</div>
-
-						<div class="col-md-3">
-							<div class="row">
-								<div class="col-md-12" v-if="privateState.getCurrentBoardCategory() == privateState.boardCategory.MY">
-									<div class="panel panel-default panel-menu">
-										<div class="panel-heading">
-											<strong>Buat Board Anda</strong>
-										</div>
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-md-12">
-													<button v-if="!privateState.getUserLoginState()" @click="createBoardButNotLoggedIn()" class="btn btn-danger btn-block">Buat Board</button>
-													<button v-if="privateState.getUserLoginState()" @click="showSubmitBoardModalToCreate()" class="btn btn-success btn-block">Buat Board</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="panel panel-default panel-menu">
-										<div class="panel-heading">
-											<strong>Login <span style="color: red;">(anda belum login)</span></strong>
-										</div>
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-md-12">
-													<button @click="showLoginModal()" class="btn btn-success btn-block">Login</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="panel panel-default panel-menu">
-										<div class="panel-heading">
-											<strong>Pilih Kategori Board</strong>
-										</div>
-										<div class="panel-body">
-											<button 
-												v-bind:disabled="privateState.getLoadingState()"
-												
-												@click="setCurrentBoardCategory(privateState.boardCategory.ALL)" 
-												
-												v-bind:class="{ 'btn-primary' : privateState.getCurrentBoardCategory() == 'all-board', 'btn-default' : privateState.getCurrentBoardCategory() != 'all-board' }"
-
-												class="btn btn-block btn-sm"		
-											>
-												<strong>
-													<span style="font-size: 15px;">Board Semua</span>
-												</strong>
-											</button>
-											<button 
-												v-bind:disabled="privateState.getLoadingState()"
-
-												@click="setCurrentBoardCategory(privateState.boardCategory.MY)" 
-												
-												v-bind:class="{ 'btn-primary' : privateState.getCurrentBoardCategory() == 'my-board', 'btn-default' : privateState.getCurrentBoardCategory() != 'my-board' }"
-
-												class="btn btn-block btn-sm"
-											>
-												<strong>
-													<span style="font-size: 15px;">Board Saya</span>
-												</strong>
-											</button>
-											<button 
-												v-bind:disabled="privateState.getLoadingState()"
-
-												@click="setCurrentBoardCategory(privateState.boardCategory.COLLABORATED)"
-												
-												v-bind:class="{ 'btn-primary' : privateState.getCurrentBoardCategory() == 'collaborated-board', 'btn-default' : privateState.getCurrentBoardCategory() != 'collaborated-board' }"
-
-												class="btn btn-block btn-sm"
-											>
-												<strong>
-													<span style="font-size: 15px;">Board Kolaborasi</span>
-												</strong>
-											</button>
-											<button 
-												v-bind:disabled="privateState.getLoadingState()"
-												
-												@click="setCurrentBoardCategory(privateState.boardCategory.BOOKMARKED)" 
-												
-												v-bind:class="{ 'btn-primary' : privateState.getCurrentBoardCategory() == 'bookmarked-board', 'btn-default' : privateState.getCurrentBoardCategory() != 'bookmarked-board' }"
-
-												class="btn btn-block btn-sm"
-											>
-												<strong>
-													<span style="font-size: 15px;">Board Ditandai</span>
-												</strong>
-											</button>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12">
-									<topic-selector
-										@topic-selected="onTopicSelected"
-									>
-										
-									</topic-selector>
-								</div>
-							</div>
+						<div class="col-md-12">
+							<topic-selector
+								@topic-selected="onTopicSelected"
+							>
+							</topic-selector>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12">
-					<pagination-component
-						v-if="!privateState.getLoadingState()"
-						:current-page="privateState.getCurrentPage()"
-						:number-of-pages="privateState.getTotalPages()"
-						:number-of-pagination-displayed="meta.numberOfPaginationDisplayed"
-						@page-change="changePage"
-					>
-					</pagination-component>  
+				<div class="col-md-7">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="create-board-box">
+								<h4><strong>Buat Argumen Anda !!!!</strong></h4>
+								<button v-if="!privateState.getUserLoginState()" @click="createBoardButNotLoggedIn()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
+-								<button v-if="privateState.getUserLoginState()" @click="showSubmitBoardModalToCreate()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
+							</div>
+                    	</div>
+						<div class="col-md-12">
+							<div 
+								class="row board-list-container" 
+								v-infinite-scroll="loadMoreBoards"
+								infinite-scroll-disabled="stillLoadingMore"
+							>
+								<transition-group name="fade">
+									<board-component v-for="(board, index) in privateState.getBoards()" 
+										:board="board" 
+										:key="board.getId()"
+										:index="index"
+										:is-current-user-logged-in="privateState.getUserLoginState()"
+										@vote-but-not-logged-in="voteButNotLoggedIn"
+										@show-collaborator="showCollaborators"
+										@change-board="showSubmitBoardModalToEdit"
+										@delete-board="showDeleteModalConfirmation"
+										@publish-board="publishBoard"
+										@unpublish-board="unpublishBoard"
+										v-if="!privateState.getLoadingState()"
+									>
+									</board-component>
+								</transition>
+							</div>
+						</div>
+						<transition name="fade">
+							<div  v-if="privateState.getLoadingState()" class="col-md-12 text-center" style="padding: 50px;">
+								<img width="140px" height="140px" src="/builds/css/circle-loading.gif" alt="">
+							</div>
+						</transition>
+					</div>
 				</div>
 			</div>
 		</div>
-		
-		<footer style="margin-top: 10%;">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-4">
-						<div class="footer-block">
-							
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="footer-block text-center">
-							<p>
-								Berargumen adalah aplikasi untuk membuat diagram argumen.
-							</p>
-							<p class="copyright">
-								© 2017 Berargumen.
-							</p>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="footer-block">
-							
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
-		
+
 		<modal-login v-bind:title="'Login'" v-bind:uniq-id="'login-modal'" ref="loginModal">
 			<div class="col-md-12" v-if="messages.loginModal.error">
 				<div class="alert alert-danger">
-				  	<p style="color: red;"><strong>{{ messages.loginModal.content }}</strong></p>
+				  	<strong>{{ messages.loginModal.content }}</strong>
 				</div>
 			</div>
 			<div class="col-md-12">
@@ -425,7 +452,7 @@
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-md-12">
-										<button class="btn btn-primary btn-block">Facebook</button>	
+										<button @click="facebookLogin()" class="btn btn-primary btn-block">Facebook</button>	
 									</div>
 								</div>	
 							</div>
@@ -448,12 +475,12 @@
 		>
 			<div class="col-md-12">
 				<div class="form-group">
-					<label for="">Judul Board</label>
-					<input type="text" class="form-control" placeholder="Masukan judul board">
+					<label for="">Kesimpulan</label>
+					<textarea class="form-control" rows="2" placeholder="Isikan sebuah kesimpulan seperti 'Bumi itu datar'"></textarea>
 				</div>
 				<div class="form-group">
-					<label for="comment">Deskripsi Board</label>
-					<textarea class="form-control" rows="5" placeholder="Masukan deskripsi board"></textarea>
+					<label for="comment">Deskripsi</label>
+					<textarea class="form-control" rows="5" placeholder="Isikan deskripsi"></textarea>
 				</div>
 			</div>
 			<div class="col-md-12">
@@ -465,13 +492,13 @@
 						<div style="border: solid 1px #cccccc; min-height: 150px;" id="tagsinput"></div>	
 					</div>
 					<div class="col-md-12">
-						<span>Untuk menambah tags, masukan kata lalu tekan enter</span>
+						<span>Untuk menambah tags, masukan kata lalu tekan <strong>enter</strong></span>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-12" style="margin-top: 10px;">
 				<div class="pull-right">
-					<button class="btn btn-success">Simpan Board</button>
+					<button class="btn btn-success">Simpan Argumen</button>
 					<button class="btn btn-danger" @click="hideSubmitBoardModal()">Tutup</button>
 				</div>
 			</div>
