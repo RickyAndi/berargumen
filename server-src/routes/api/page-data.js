@@ -4,10 +4,11 @@ const router = express.Router();
 module.exports = sockets => {
   router.get('/index', (req, res, next) => {
     const data = {
-      isUserLoggedIn : true
+      isUserLoggedIn : false,
+      user : req.user
     };
 
-    if(req.user) {
+    if(req.isAuthenticated()) {
       data.isUserLoggedIn = true;
     }
 
