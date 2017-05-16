@@ -140,12 +140,8 @@ new Vue({
     },
     setCurrentBoardCategory(boardCategory) {
       privateState.setCurrentBoardCategory(boardCategory);
-      
-      const boardList = document.querySelector('.board-list-container');
-      const topPos = boardList.offsetTop;
-      boardList.scrollTop = 0;
-      
       this.privateState.goToPage(1);
+      this.scrollBoardListToTop();
     },
     setSearchQuery(event) {
       this.subjects.searchQuery.next(event.target.value);
@@ -153,17 +149,18 @@ new Vue({
     onTopicSelected(args) {
       this.privateState.setCurrentBoardTopic(args.topics);
       this.privateState.goToPage(1);
+      this.scrollBoardListToTop();
     },
     facebookLogin() {
       window.location.href="/auth/facebook"
     },
-    testLoad() {
-      // alert('cok')
-    },
     loadMoreBoards() {
-      this.privateState.loadMoreBoards(() => {
-       
-      });
+      this.privateState.loadMoreBoards();
+    },
+    scrollBoardListToTop() {
+      const boardList = document.querySelector('.board-list-container');
+      const topPos = boardList.offsetTop;
+      boardList.scrollTop = 0;
     }
   },
   computed : {
@@ -172,6 +169,9 @@ new Vue({
     },
     stillLoadingMore() {
       return this.privateState.stillLoadingMore();
+    },
+    isAnyNextPage() {
+      return this.privateState.isAnyNextPage();
     }
   },
   mounted() {
@@ -181,6 +181,7 @@ new Vue({
       .subscribe(searchQuery => {
         this.privateState.setSearchQuery(searchQuery);
         this.privateState.goToPage(1);
+        this.scrollBoardListToTop();
       })
 
     this.inputs.tags = new Taggle('tagsinput', {
