@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon server.js",
     "testclient": "./node_modules/karma/bin/karma start karma.conf.js",
-    "testserver": "./node_modules/mocha/bin/mocha server-src/tests"
+    "testserver": "./node_modules/mocha/bin/mocha server-src/tests/**"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +25,8 @@
     "chai": "^3.5.0",
     "ejs": "^2.5.6",
     "express": "^4.15.0",
+    "express-session": "^1.15.2",
+    "faker": "^4.1.0",
     "get-increment-decrement": "^1.0.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
@@ -53,11 +55,13 @@
     "ramda": "^0.23.0",
     "rxjs": "^5.2.0",
     "sinon": "^1.17.7",
+    "slugify": "^1.1.0",
     "stringify": "^5.1.0",
     "taggle": "^1.11.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "vue": "^2.2.1",
+    "vue-infinite-scroll": "^2.0.1",
     "watchify": "^3.9.0"
   },
   "devDependencies": {
