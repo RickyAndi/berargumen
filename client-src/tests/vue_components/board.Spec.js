@@ -267,26 +267,26 @@ describe('Board component', function() {
   })
 
   it('can get count of reason in its dom', function() {
-    var countOfReason = $(vm1.$el).find('.col-md-12').find('.board-spec').find('.reason-count').text();
+    var countOfReason = $(vm1.$el).find('.reason-count').text();
     var expectedText = boardInstance.getCountOfReason() + ' Alasan';
     expect(countOfReason).to.equal(expectedText);
   })
 
   it('can get count of objection in its dom', function() {
-    var countOfObjection = $(vm1.$el).find('.col-md-12').find('.board-spec').find('.objection-count').text();
+    var countOfObjection = $(vm1.$el).find('.objection-count').text();
     var expectedText = boardInstance.getCountOfObjection() + ' Keberatan';
     expect(countOfObjection).to.equal(expectedText);
   })
 
   it('can get count of rebuttal in its dom', function() {
-    var countOfRebuttal = $(vm1.$el).find('.col-md-12').find('.board-spec').find('.rebuttal-count').text();
+    var countOfRebuttal = $(vm1.$el).find('.rebuttal-count').text();
     var expectedText = boardInstance.getCountOfRebuttal() + ' Bantahan';
     expect(countOfRebuttal).to.equal(expectedText);
   })
 
   it('can get count of collaborators in its dom', function() {
-    var countOfCollaborators = $(vm1.$el).find('.collaborators-count').text();
-    var expectedText = boardInstance.getCountOfCollaborators() + ' Kolaborator';
+    var countOfCollaborators = $(vm1.$el).find('.arguers-count').text();
+    var expectedText = boardInstance.getCountOfCollaborators() + ' Arguer';
     expect(countOfCollaborators).to.equal(expectedText);
   })
 
