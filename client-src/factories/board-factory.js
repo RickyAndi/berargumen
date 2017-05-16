@@ -7,36 +7,37 @@ module.exports = (() => {
     const user = new User();
 
     user
-      .setName(data.user.name)
-      .setProfilePictureUrl(data.user.profilePictureUrl);
+      .setName(data.creator.displayName)
+      .setProfilePictureUrl(data.creator.profilePicUrl);
 
-    const collaborators = data.collaborators.map(collaborator => {
-      const collaboratorInstance = new User();
+    const arguers = data.arguers.map(arguer => {
+      const arguerInstance = new User();
       
-      collaboratorInstance
+      arguerInstance
         .setName(collaborator.name)
-        .setProfilePictureUrl(collaborator.profilePictureUrl);
+        .setProfilePictureUrl(collaborator.profilePicUrl);
 
-      return collaboratorInstance;
+      return arguerInstance;
     })
 
     board
-      .setId(data.id)
+      .setId(data._id)
       .setTitle(data.title)
       .setDescription(data.description)
       .setTopic(data.topic)
       .setUser(user)
       .setTags(data.tags)
-      .setCollaborators(collaborators)
+      .setArguers(arguers)
       .setCountOfReason(data.countOfReason)
       .setCountOfObjection(data.countOfObjection)
       .setCountOfRebuttal(data.countOfRebuttal)
       .setIsCurrentUserUpvoted(data.isCurrentUserUpvoted)
       .setIsCurrentUserDownvoted(data.isCurrentUserDownvoted)
       .setIsBelongToCurrentUser(data.isBelongToCurrentUser)
-      .setIsPublished(data.isPublished)
-      .setDownvote(data.downvote)
-      .setUpvote(data.upvote);
+      .setIsPublished(data.published)
+      .setDownvote(data.countOfDownvote)
+      .setUpvote(data.countOfUpvote)
+      .setSlug(data.slug);
       
     return board;
   }
