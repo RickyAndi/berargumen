@@ -29,7 +29,7 @@ var state = {
   isLoading : false,
   isLoadingMore : false,
   nextPageToLoad : 1,
-  anyNextPage : false,
+  anyNextPage : true,
   setService(serviceName, serviceInstance) {
     this.services[serviceName] = serviceInstance;
     return this;
@@ -73,7 +73,7 @@ var state = {
 
     return request(data);
   },
-  loadMoreBoards(callback) {
+  loadMoreBoards() {
     if(this.isAnyNextPage() && !this.getLoadingState()) {
       if(!this.stillLoadingMore()) {
         console.log('load more');
@@ -89,8 +89,6 @@ var state = {
         this.getBoardsFromServer(query)
           .then((boards) => {
             
-            callback();
-
             this.setIsLoadingMore(false);
             const boardInstances = boards.docs.map(this.factories.board.create);
             this.addBoards(boardInstances);
