@@ -2,6 +2,7 @@ const Vue = require('vue');
 const Taggle = require('taggle');
 const axios = require('axios');
 const Rx = require('rxjs');
+const infiniteScroll = require('vue-infinite-scroll');
 
 const boardComponent = require('./vue_components/board');
 const paginationComponent = require('./vue_components/pagination');
@@ -25,6 +26,7 @@ const privateState = require('./states/index');
 
 new Vue({
   el : '#app',
+  directives: { infiniteScroll },
   components : {
     'board-component' : boardComponent,
     'pagination-component' : paginationComponent,
@@ -59,7 +61,7 @@ new Vue({
       'vote-down' : 'Whoops, untuk vote down board ini anda harus login terlebih dahulu' 
     },
     meta : {
-      submitBoardModalTitle : 'Buat Board',
+      submitBoardModalTitle : 'Argumen',
       numberOfPaginationDisplayed : new OddNumber(7),
     }
   },
@@ -81,10 +83,11 @@ new Vue({
     getPageData() {
       return pageDataService.getIndex()
         .then(data => {
-          this.privateState.setUserLoginState(data.isUserLoggedIn)
+          this.privateState.setUserLoginState(data.isUserLoggedIn);
+          return data;
         })
         .catch(error => {
-          console.log(error)
+          throw error;
         })
     },
     getBoards() {
@@ -137,6 +140,11 @@ new Vue({
     },
     setCurrentBoardCategory(boardCategory) {
       privateState.setCurrentBoardCategory(boardCategory);
+      
+      const boardList = document.querySelector('.board-list-container');
+      const topPos = boardList.offsetTop;
+      boardList.scrollTop = 0;
+      
       this.privateState.goToPage(1);
     },
     setSearchQuery(event) {
@@ -145,11 +153,25 @@ new Vue({
     onTopicSelected(args) {
       this.privateState.setCurrentBoardTopic(args.topics);
       this.privateState.goToPage(1);
+    },
+    facebookLogin() {
+      window.location.href="/auth/facebook"
+    },
+    testLoad() {
+      // alert('cok')
+    },
+    loadMoreBoards() {
+      this.privateState.loadMoreBoards(() => {
+       
+      });
     }
   },
   computed : {
     boardCategoryText() {
       return boardCategoryTextHashMap[this.privateState.getCurrentBoardCategory()];
+    },
+    stillLoadingMore() {
+      return this.privateState.stillLoadingMore();
     }
   },
   mounted() {
@@ -171,6 +193,9 @@ new Vue({
     
     this.getBoards();
     
-    this.getPageData();
+    this.getPageData()
+      .then(data => {
+        console.log(data)
+      });
   }
 }) 
