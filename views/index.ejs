@@ -422,6 +422,16 @@
 										v-if="!privateState.getLoadingState()"
 									>
 									</board-component>
+								</transition-group>
+								<transition name="fade">
+									<div class="col-md-12 text-center" v-if="stillLoadingMore">
+										<h2>...Loading</h2>
+									</div>
+								</transition>
+								<transition name="fade">
+									<div class="col-md-12 text-center" v-if="!isAnyNextPage && !stillLoadingMore && !privateState.getLoadingState()">
+										<h4>Dah gak ada nyang bisa diload bro .. :( </h4>
+									</div>
 								</transition>
 							</div>
 						</div>
