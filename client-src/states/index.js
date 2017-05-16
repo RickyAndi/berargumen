@@ -27,6 +27,9 @@ var state = {
   currentPage : 1,
   searchQuery : '',
   isLoading : false,
+  isLoadingMore : false,
+  nextPageToLoad : 1,
+  anyNextPage : false,
   setService(serviceName, serviceInstance) {
     this.services[serviceName] = serviceInstance;
     return this;
@@ -68,14 +71,47 @@ var state = {
     
     const request = serviceRequestMapping[this.getCurrentBoardCategory()];
 
-    return request(data)
-      .then((boards) => {
-        this.emptyBoards();
-        var boardInstances = boards.docs.map(this.factories.board.create);
-        this.addBoards(boardInstances);
+    return request(data);
+  },
+  loadMoreBoards(callback) {
+    if(this.isAnyNextPage() && !this.getLoadingState()) {
+      if(!this.stillLoadingMore()) {
+        console.log('load more');
 
-        return boards;
-      });
+        this.setIsLoadingMore(true);
+        
+        const query = {
+          page : this.getNextPageToLoad(),
+          topic : this.getCurrentBoardTopic(),
+          query : this.getSearchQuery()
+        }
+
+        this.getBoardsFromServer(query)
+          .then((boards) => {
+            
+            callback();
+
+            this.setIsLoadingMore(false);
+            const boardInstances = boards.docs.map(this.factories.board.create);
+            this.addBoards(boardInstances);
+
+            const currentPage = parseInt(boards.page);
+            const nextPage = currentPage + 1;
+            const totalPages = boards.pages;
+
+            if(currentPage >= totalPages) {
+              this.setAnyNextPage(false);
+            } else {
+              this.setAnyNextPage(true);
+              this.setNextPageToLoad(nextPage)
+            }
+          })
+          .catch((error) => {
+            this.setIsLoadingMore(false);
+          });
+      }
+    }
+    console.log('no load more')
   },
   setUserLoginState(isLoggedIn) {
     this.isUserLoggedIn = isLoggedIn;
@@ -137,11 +173,30 @@ var state = {
     }
 
     return this.getBoardsFromServer(query)
+      .then((boards) => {
+        this.emptyBoards();
+        var boardInstances = boards.docs.map(this.factories.board.create);
+        this.addBoards(boardInstances);
+        
+        return boards;
+      })
       .then((data) => {
         this.setLoadingState(false);
         this.setCurrentPage(page);
         this.setTotalPages(data.pages);
         this.setError('board', false);
+
+        const currentPage = parseInt(data.page);
+        const nextPage = currentPage + 1;
+        const totalPages = data.pages;
+
+        if(currentPage >= totalPages) {
+          this.setAnyNextPage(false);
+        } else {
+          this.setAnyNextPage(true);
+          this.setNextPageToLoad(nextPage)
+        }
+        
         return data;
       }).catch((error) => {
         this.setLoadingState(false);
@@ -161,7 +216,25 @@ var state = {
   setError(name, isError) {
     this.errors[name] = isError;
     return this;
-  } 
+  },
+  setIsLoadingMore(bool) {
+    this.isLoadingMore = bool;
+  },
+  stillLoadingMore() {
+    return this.isLoadingMore;
+  },
+  setNextPageToLoad(nextPage) {
+    this.nextPageToLoad = nextPage;
+  },
+  getNextPageToLoad() {
+    return this.nextPageToLoad;
+  },
+  setAnyNextPage(bool) {
+    this.anyNextPage = bool;
+  },
+  isAnyNextPage() {
+    return this.anyNextPage;
+  }
 }
 
 module.exports = state;
