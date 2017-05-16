@@ -1,35 +1,36 @@
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
+const User = require('./models/user');
+const { async, await } = require('asyncawait');
+const config = require('../config.json');
 
 passport.use(new FacebookStrategy({
-  clientID: '399922150379625',
-  clientSecret: '891556e052a9039336917de94e632e99',
-  callbackURL: "http://localhost:3000/auth/facebook/callback",
-  profileFields: ['id', 'displayName', 'link', 'photos', 'emails']
+  clientID: config.facebookApp.clientId,
+  clientSecret: config.facebookApp.clientSecret,
+  callbackURL: config.facebookApp.callbackUrl,
+  profileFields: config.facebookApp.profileFields
 },
-  function(accessToken, refreshToken, profile, done) {
-    User.findOrCreateFacebook(profile)
-      .then(function(user) {
-        done(null, user);
-      })
-      .catch(function(error) {
-        done(error);
-      })
-  }
+  async((accessToken, refreshToken, profile, done) => {
+    try {
+      const user = await(User.findOrCreateFacebook(profile));
+      return done(null, user);
+    } catch(error) {
+     return done(error); 
+    }
+  })
 ));
 
-passport.serializeUser(function(user, done) {
+passport.serializeUser((user, done) => {
   done(null, user._id);
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findOne({ _id : id})
-    .then(function(user) {
-      done(null, user)
-    })
-    .catch(function(error) {
-      done(error);
-    })
-});
+passport.deserializeUser(async((id, done) => {
+  try {
+    const user = await(User.findOne({ _id : id }, 'displayName'));
+    return done(null, user)
+  } catch (error) {
+    return done(error);
+  }
+}));
 
 module.exports = passport;
