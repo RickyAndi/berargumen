@@ -2,7 +2,7 @@ const Vue = require('vue');
 const Board = require('../models/board');
 
 const board = Vue.component('board', {
-  template : require('../templates/board.html'),
+  template : require('../templates/board-v2.html'),
   props : {
     board : {
       type : Board,
