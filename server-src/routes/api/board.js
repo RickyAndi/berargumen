@@ -1,61 +1,81 @@
 const express = require('express');
 const router = express.Router();
 const boardsData = require('./boardData');
+const Board = require('../../models/board');
+const { async, await } = require('asyncawait');
 
 module.exports = sockets => {
-  router.get('/featured', (req, res) => {
+  router.get('/featured', async((req, res) => {
+    const page = req.query.page;
+    const data = await(Board.paginate({}, { 
+      page : page,
+      populate : 'cards creator arguerRequests rejectedArguerRequests arguers'
+    }));
+    
     return res
       .status(200)
-      .json({
-        docs : boardsData,
-        pages : 4
-      });
-  });
+      .json(data);
+  }));
 
-  router.get('/new', (req, res) => {
+  router.get('/new', async((req, res) => {
+    const page = req.query.page;
+    const data = await(Board.paginate({}, { 
+      page : page,
+      populate : 'cards creator arguerRequests rejectedArguerRequests arguers'
+    }));
+    
     return res
       .status(200)
-      .json({
-        docs : boardsData,
-        pages : 7
-      });
-  });
+      .json(data);
+  }));
 
-  router.get('/my', (req, res) => {
+  router.get('/my', async((req, res) => {
+    const page = req.query.page;
+    const data = await(Board.paginate({}, { 
+      page : page,
+      populate : 'cards creator arguerRequests rejectedArguerRequests arguers'
+    }));
+    
     return res
       .status(200)
-      .json({
-        docs : boardsData,
-        pages : 3
-      });
-  });
+      .json(data);
+  }));
 
-  router.get('/bookmarked', (req, res) => {
+  router.get('/bookmarked', async((req, res) => {
+    const page = req.query.page;
+    const data = await(Board.paginate({}, { 
+      page : page,
+      populate : 'cards creator arguerRequests rejectedArguerRequests arguers'
+    }));
+    
     return res
       .status(200)
-      .json({
-        docs : boardsData,
-        pages : 7
-      });
-  });
+      .json(data);
+  }));
 
-  router.get('/collaborated', (req, res) => {
+  router.get('/collaborated', async((req, res) => {
+    const page = req.query.page;
+    const data = await(Board.paginate({}, { 
+      page : page,
+      populate : 'cards creator arguerRequests rejectedArguerRequests arguers'
+    }));
+    
     return res
       .status(200)
-      .json({
-        docs : boardsData,
-        pages : 6
-      });
-  });
+      .json(data);
+  }));
 
-  router.get('/all', (req, res) => {
+  router.get('/all', async((req, res) => {
+    const page = req.query.page;
+    const data = await(Board.paginate({}, { 
+      page : page,
+      populate : 'cards creator arguerRequests rejectedArguerRequests arguers'
+    }));
+    
     return res
       .status(200)
-      .json({
-        docs : boardsData,
-        pages : 10
-      });
-  });
+      .json(data);
+  }));
 
   return router;
 };
