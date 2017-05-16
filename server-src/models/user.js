@@ -3,19 +3,20 @@ const Schema = Mongoose.Schema;
 
 const schema = new Schema({
   facebookId : String,
-  name : String,
+  displayName : String,
   profilePicUrl : String,
   gender : String,
   email : String,
   addedOn : { 
     type: Date, 
     default: Date.now 
+  }
+}, {
+  toJSON : {
+    virtuals : true
   },
-  numberOfBoards : {
-    type : Number
-  },
-  numberOfCards : {
-    type : Number
+  toObject : {
+    virtuals : true
   }
 });
 
@@ -48,5 +49,27 @@ schema.statics.findOrCreateFacebook = function findOrCreate(profile) {
       })
   })
 };
+
+schema.virtual("numberOfCards").get(function() {
+  if(this.cards == null) return 0;
+  return this.cards.length;
+});
+
+schema.virtual("numberOfBoards").get(function() {
+  if(this.boards == null) return 0;
+  return this.boards.length;
+});
+
+schema.virtual('boards', {
+  ref : 'Board',
+  localField : '_id',
+  foreignField : 'creatorId'
+});
+
+schema.virtual('cards', {
+  ref : 'Card',
+  localField : '_id',
+  foreignField : 'creatorId'
+});
 
 module.exports = Mongoose.model('User', schema);
