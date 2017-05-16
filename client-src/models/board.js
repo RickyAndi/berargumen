@@ -7,7 +7,7 @@ class Board {
     this.countOfReason = null;
     this.countOfObjection = null;
     this.countOfRebuttal = null;
-    this.collaborators = [];
+    this.arguers = [];
     this.tags = [];
     this.topic = null;
     this.downvote = null;
@@ -16,6 +16,7 @@ class Board {
     this.isCurrentUserDownvoted = false;
     this.isBelongToCurrentUser = false;
     this.isPublished = false;
+    this.slug = null;
   }
 
   setId (id) {
@@ -62,17 +63,17 @@ class Board {
     return this.user;
   }
 
-  setCollaborators (collaborators) {
-    this.collaborators = collaborators;
+  setArguers (arguers) {
+    this.arguers = arguers;
     return this;
   }
 
-  getCollaborators () {
-    return this.collaborators;
+  getArguers () {
+    return this.arguers;
   }
 
-  getCountOfCollaborators() {
-    return this.getCollaborators().length;
+  getCountOfArguers() {
+    return this.getArguers().length;
   }
 
   setCountOfReason(countOfReason) {
@@ -192,6 +193,15 @@ class Board {
 
   published () {
     return this.isPublished;
+  }
+
+  setSlug(slug) {
+    this.slug = slug;
+    return this;
+  }
+
+  getSlug() {
+    return this.slug;
   }
 };
 
