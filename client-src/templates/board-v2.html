@@ -1,0 +1,98 @@
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="board-tags">
+                        <button class="btn btn-default btn-xs tag-button" v-for="tag in board.tags">{{ tag }}</button>
+                    </div>
+                    <div class="board-title-box">
+                        <h3><a target="_blank" :href="'/board/' + board.getSlug() "><span class="board-title">{{ board.title }}</span></a> - <span class="board-topic">{{ board.getTopic() }}</span> </h3>
+                    </div>
+                    <div class="creator-image-box">
+                        <img width="60px" height="60px" class="img-circle creator-image" v-bind:src="board.getUserProfilePictureUrl()" alt="">
+                        <div class="creator-image-box-text">
+                            <p class="board-username">{{ board.getUserName() }}</p>
+                            <p class="board-time">Dibuat 10 jam yang lalu</p>
+                        </div>
+                    </div>
+                    <div class="board-spec-box">
+                        <span class="board-spec reason-count">{{ board.getCountOfReason() + ' Alasan' }}</span>
+                        <span class="board-spec objection-count">{{ board.getCountOfObjection() + ' Keberatan' }}</span>
+                        <span class="board-spec rebuttal-count">{{ board.getCountOfRebuttal() + ' Bantahan' }}</span>
+                        <span class="board-spec arguers-count">{{ board.getCountOfArguers() + ' Arguer' }}</span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="board-description-box">
+                        <p v-if="!board.isDescriptionTooLong()" class="board-description">{{ board.getDescription() }}</p>
+                        <p v-if="board.isDescriptionTooLong() && !viewFullDescription" class="board-description">
+                            {{ board.getExcerptDescription() }} <span style="color: blue;" @click="seeFullDescription()"><strong>...Lihat semua</strong></span>
+                        </p>	
+                        <p v-if="board.isDescriptionTooLong() && viewFullDescription" class="board-description">
+                            {{ board.getDescription() }} <span style="color: blue;" @click="seeLessDescription()"><strong>...Lihat sedikit</strong></span>
+                        </p>	
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6" v-if="isCurrentUserLoggedIn">
+                            <div class="board-buttons-box">
+                                <button v-if="!board.currentUserUpvoted()" class="btn btn-default btn-sm upvote-button" @click="upvote()">
+                                    Suka
+                                    <span class="upvote-count">{{ board.getUpvote() }}</span>
+                                </button>
+                                
+                                <button v-if="board.currentUserUpvoted()" class="btn btn-success btn-sm remove-upvote-button voted" @click="removeUpvote()">
+                                    Tidak Suka
+                                    <span class="upvote-count">{{ board.getUpvote() }}</span>
+                                </button>
+                                
+                                <button v-if="board.currentUserDownvoted()" class="btn btn-danger btn-sm remove-downvote-button voted" @click="removeDownvote()">
+                                    Suka
+                                    <span class="downvote-count">{{ board.getDownvote() }}</span>
+                                </button>
+                                
+                                <button v-if="!board.currentUserDownvoted()" class="btn btn-default btn-sm  downvote-button" @click="downvote()">
+                                    Tidak Suka
+                                    <span class="downvote-count">{{ board.getDownvote() }}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6" v-if="!isCurrentUserLoggedIn">
+                            <div class="menu-button-box">
+                                <button @click="voteUpButNotLoggedIn()" title="Anda harus masuk untuk vote up" class="upvote-disabled-button btn btn-default btn-sm">
+                                Suka
+                                    <span class="upvote">{{ board.getUpvote() }}</span>
+                                </button>
+
+                                <button @click="voteDownButNotLoggedIn()" title="Anda harus masuk untuk vote up" class="downvote-disabled-button btn btn-default btn-sm">
+                                    Tidak Suka
+                                    <span class="upvote">{{ board.getDownvote() }}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="menu-button-box owner-buttons" v-if="board.belongsToCurrentUser()">
+                                <div class="pull-right">
+                                    <button @click="changeBoard()" class="btn btn-success btn-sm">
+                                        Ubah
+                                    </button>
+                                    <button @click="deleteBoard()" class="btn btn-danger btn-sm">
+                                        Hapus
+                                    </button>
+                                    <button v-if="!board.published()" @click="publishBoard()" class="btn btn-primary btn-sm">
+                                        Publish
+                                    </button>
+                                    <button @click="unpublishBoard()" v-if="board.published()" class="btn btn-warning btn-sm">
+                                        Sembunyikan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
