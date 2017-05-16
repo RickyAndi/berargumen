@@ -11,6 +11,8 @@ Berargumen is real time argument mapping platform
 - make sure gulp installed globally
 - run `gulp`
 - run `gulp copy-css`
+- make sure nodemon installed globally
+- fill config.json with proper data
 - run `npm start`
 
 # test
