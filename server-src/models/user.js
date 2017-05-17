@@ -1,5 +1,6 @@
 const Mongoose = require('../mongoose');
 const Schema = Mongoose.Schema;
+const { async, await } = require('asyncawait');
 
 const schema = new Schema({
   facebookId : String,
@@ -22,32 +23,28 @@ const schema = new Schema({
 
 schema.statics.findOrCreateFacebook = function findOrCreate(profile) {
   const self = this;
-  return new Promise(function(resolve, reject) {
-    self.findOne({ email : profile.emails[0].value })
-      .then(function(user) {
-        if(!user) {
-          
-          const user = new self({
-            email : profile.emails[0].value,
-            displayName : profile.displayName,
-            photoUrl : profile.photos[0].value
-          });
+  return new Promise(async(function(resolve, reject) {
+    try {
+      const user = await(self.findOne({ email : profile.emails[0].value }));
+      
+      if(!user) {
+        const toBeCreatedUser = new self({
+          email : profile.emails[0].value,
+          displayName : profile.displayName,
+          profilePicUrl : profile.photos[0].value
+        });
+        
+        const newUser = await(toBeCreatedUser.save());
 
-          user.save()
-            .then(function(newUser) {
-              resolve(newUser);
-            })
-            .catch(function(error) {
-              reject(error);
-            })
-        }
+        return resolve(newUser);
+      }
 
-        resolve(user);
-      })
-      .catch(function(error) {
-        reject(error)
-      })
-  })
+      return resolve(user);
+    } catch(error) {
+      console.log(error)
+      return reject(error);
+    }
+  }));
 };
 
 schema.virtual("numberOfCards").get(function() {
