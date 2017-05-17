@@ -1,6 +1,6 @@
 # Berargumen
 
-Berargumen is real time argument mapping platform
+Berargumen is real time argument mapping platform, this software still in hard development .. :)
 
 # run development
 
