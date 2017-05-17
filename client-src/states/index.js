@@ -15,7 +15,12 @@ var state = {
     ALL : 'all-board'
   },
   errors : {
-    board : false
+    board : false,
+    loadMore : false
+  },
+  loadings : {
+    board : false,
+    loadMore : false
   },
   topics : '',
   currentBoardCategory : 'all-board',
@@ -26,8 +31,6 @@ var state = {
   totalPages : 0,
   currentPage : 1,
   searchQuery : '',
-  isLoading : false,
-  isLoadingMore : false,
   nextPageToLoad : 1,
   anyNextPage : true,
   setService(serviceName, serviceInstance) {
@@ -58,6 +61,13 @@ var state = {
   emptyBoards() {
     this.boards.splice(0, this.boards.length);
   },
+  setLoading(name, bool) {
+    this.loadings[name] = bool;
+    return this;
+  },
+  isLoading(name) {
+    return this.loadings[name];
+  },
   getBoardsFromServer(data) {
     
     let serviceRequestMapping = {};
@@ -74,11 +84,9 @@ var state = {
     return request(data);
   },
   loadMoreBoards() {
-    if(this.isAnyNextPage() && !this.getLoadingState()) {
-      if(!this.stillLoadingMore()) {
-        console.log('load more');
-
-        this.setIsLoadingMore(true);
+    if(this.isAnyNextPage() && !this.isLoading('board')) {
+      if(!this.isLoading('loadMore')) {
+        this.setLoading('loadMore', true);
         
         const query = {
           page : this.getNextPageToLoad(),
@@ -89,27 +97,21 @@ var state = {
         this.getBoardsFromServer(query)
           .then((boards) => {
             
-            this.setIsLoadingMore(false);
+            this.setLoading('loadMore', false);
+            this.setError('loadMore', false);
+
             const boardInstances = boards.docs.map(this.factories.board.create);
             this.addBoards(boardInstances);
 
-            const currentPage = parseInt(boards.page);
-            const nextPage = currentPage + 1;
-            const totalPages = boards.pages;
+            this.decideThatThereAreNextPage(boards);
 
-            if(currentPage >= totalPages) {
-              this.setAnyNextPage(false);
-            } else {
-              this.setAnyNextPage(true);
-              this.setNextPageToLoad(nextPage)
-            }
           })
           .catch((error) => {
-            this.setIsLoadingMore(false);
+            this.setLoading('loadMore', false);
+            this.setError('loadMore', true);
           });
       }
     }
-    console.log('no load more')
   },
   setUserLoginState(isLoggedIn) {
     this.isUserLoggedIn = isLoggedIn;
@@ -162,7 +164,7 @@ var state = {
     return this.searchQuery;
   },
   goToPage(page) {
-    this.setLoadingState(true);
+    this.setLoading('board', true);
 
     const query = {
       page : page,
@@ -179,31 +181,20 @@ var state = {
         return boards;
       })
       .then((data) => {
-        this.setLoadingState(false);
-        this.setCurrentPage(page);
-        this.setTotalPages(data.pages);
+        this.setLoading('board', false);
         this.setError('board', false);
 
-        const currentPage = parseInt(data.page);
-        const nextPage = currentPage + 1;
-        const totalPages = data.pages;
+        this.setCurrentPage(page);
+        this.setTotalPages(data.pages);
 
-        if(currentPage >= totalPages) {
-          this.setAnyNextPage(false);
-        } else {
-          this.setAnyNextPage(true);
-          this.setNextPageToLoad(nextPage)
-        }
-        
+        this.decideThatThereAreNextPage(data)
+
         return data;
       }).catch((error) => {
-        this.setLoadingState(false);
+        this.setLoading('board', false);
         this.setError('board', true);
         throw error;
       });
-  },
-  setLoadingState(isLoading) {
-    this.isLoading = isLoading;
   },
   getLoadingState() {
     return this.isLoading;
@@ -232,6 +223,18 @@ var state = {
   },
   isAnyNextPage() {
     return this.anyNextPage;
+  },
+  decideThatThereAreNextPage(data) {
+    const currentPage = parseInt(data.page);
+    const nextPage = currentPage + 1;
+    const totalPages = data.pages;
+
+    if(currentPage >= totalPages) {
+      this.setAnyNextPage(false);
+    } else {
+      this.setAnyNextPage(true);
+      this.setNextPageToLoad(nextPage)
+    }
   }
 }
 
