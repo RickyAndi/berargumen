@@ -187,10 +187,12 @@
 		[v-cloak] {
 			display: none;
 		}
-		
+		/*
 		.fade-enter-active, .fade-leave-active {
-		  transition: opacity .5s
+		  transition: opacity .1s
 		}
+		*/
+
 		.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
 		  opacity: 0
 		}
@@ -281,6 +283,9 @@
 			margin-top: 20px;
 		}
 
+		.warn-user-to-login {
+			margin-top: 100px;
+		}
 	</style>
 
 	
@@ -397,15 +402,39 @@
 						<div class="col-md-12">
 							<div class="create-board-box">
 								<h4><strong>Buat Argumen Anda !!!!</strong></h4>
-								<button v-if="!isUserLogin" @click="createBoardButNotLoggedIn()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
--								<button v-if="isUserLogin" @click="showSubmitBoardModalToCreate()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
+								<button v-cloak v-if="!isUserLogin" @click="createBoardButNotLoggedIn()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
+								<button v-cloak v-if="isUserLogin" @click="showSubmitBoardModalToCreate()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
 							</div>
                     	</div>
-						<div class="col-md-12">
+						<transition name="fade">
+							<div class="col-md-12 text-center warn-user-to-login" v-if="noBoardsToBeViewed && !isLoadBoardLoading && !warnThatUserCannotViewBoardExceptAllBoard">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<h4>Kelihatannya tidak ada argumen yang bisa ditampilkan</h4>
+									</div>
+								</div>
+							</div>
+						</transition>
+						<transition name="fade">
+							<div class="col-md-12 text-center warn-user-to-login" v-cloak v-if="warnThatUserCannotViewBoardExceptAllBoard">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<h4 v-if="privateState.getCurrentBoardCategory() == 'my-board'">Login, untuk melihat argumen yang anda buat</h4>
+										<h4 v-if="privateState.getCurrentBoardCategory() == 'collaborated-board'">Login, untuk melihat argumen yang anda ikuti</h4>
+										<h4 v-if="privateState.getCurrentBoardCategory() == 'bookmarked-board'">Login, untuk melihat argumen yang anda tandai</h4>
+										<div style="margin-top: 20px;">
+											<button class="btn btn-success" @click="showLoginModal()"><strong>Login</strong></button>
+										</div>	
+									</div>
+								</div>
+							</div>
+						</transition>
+						<div class="col-md-12" v-cloak>
 							<div 
 								class="row board-list-container" 
 								v-infinite-scroll="loadMoreBoards"
 								infinite-scroll-disabled="isLoadMoreLoading"
+								v-show="viewBoardsLists && !warnThatUserCannotViewBoardExceptAllBoard && !noBoardsToBeViewed"
 							>
 								<transition-group name="fade">
 									<board-component v-for="(board, index) in boards" 
@@ -419,34 +448,34 @@
 										@delete-board="showDeleteModalConfirmation"
 										@publish-board="publishBoard"
 										@unpublish-board="unpublishBoard"
-										v-if="viewBoardsLists"
+										v-if="viewBoardsLists && !warnThatUserCannotViewBoardExceptAllBoard"
 									>
 									</board-component>
 								</transition-group>
 								<transition name="fade">
-									<div class="col-md-12 text-center" v-if="viewLoadBoardError">
-										<h2>Sorry ada error .. :(</h2>
+									<div v-cloak class="col-md-12 text-center" v-if="viewLoadBoardError">
+										<h4>Sorry ada error .. :(</h4>
 									</div>
 								</transition>
 								<transition name="fade">
-									<div class="col-md-12 text-center" v-if="viewLoadMoreLoading">
-										<h2>...Loading</h2>
+									<div v-cloak class="col-md-12 text-center" v-if="viewLoadMoreLoading">
+										<h4>Tunggu sebentar, masih mengambil data .. :)</h4>
 									</div>
 								</transition>
 								<transition name="fade">
-									<div class="col-md-12 text-center" v-if="viewThereIsNoBoardsToLoad">
+									<div v-cloak class="col-md-12 text-center" v-if="viewThereIsNoBoardsToLoad && !noBoardsToBeViewed">
 										<h4>Dah mentok bro, jangan scroll terus :( </h4>
 									</div>
 								</transition>
 								<transition name="fade">
-									<div class="col-md-12 text-center" v-if="viewLoadMoreError">
-										<h4>Sorry bro, ada error, bentar, jangan nyecroll terus .. :/</h4>
+									<div v-cloak class="col-md-12 text-center" v-if="viewLoadMoreError">
+										<h4>Sorry bro, ada error, bentar, jangan scroll terus .. :/</h4>
 									</div>
 								</transition>
 							</div>
 						</div>
 						<transition name="fade">
-							<div  v-if="isLoadBoardLoading" class="col-md-12 text-center" style="padding: 50px;">
+							<div v-cloak v-if="isLoadBoardLoading" class="col-md-12 text-center" style="padding: 50px;">
 								<img width="140px" height="140px" src="/builds/css/circle-loading.gif" alt="">
 							</div>
 						</transition>
@@ -455,7 +484,7 @@
 			</div>
 		</div>
 
-		<modal-login v-bind:title="'Login'" v-bind:uniq-id="'login-modal'" ref="loginModal">
+		<modal-login v-cloak v-bind:title="'Login'" v-bind:uniq-id="'login-modal'" ref="loginModal">
 			<div class="col-md-12" v-if="messages.loginModal.error">
 				<div class="alert alert-danger">
 				  	<strong>{{ messages.loginModal.content }}</strong>
@@ -483,11 +512,12 @@
 			</div>
 		</modal-login>
 		
-		<modal-collaborators v-bind:title="'Kolaborator'" v-bind:uniq-id="'collaborators-modal'" ref="collaboratorsModal">
+		<modal-collaborators v-cloak v-bind:title="'Kolaborator'" v-bind:uniq-id="'collaborators-modal'" ref="collaboratorsModal">
 			<collaborators-view v-bind:collaborators="privateState.getCollaboratorsToBeShown()"></collaborators-view>
 		</modal-collaborators>
 
-		<modal-submit-board 
+		<modal-submit-board
+			v-cloak
 			v-bind:title="meta.submitBoardModalTitle" 
 			v-bind:uniq-id="'edit-board-modal'" 
 			ref="submitBoardModal"
@@ -524,7 +554,7 @@
 			</div>
 		</modal-submit-board>
 
-		<modal-delete-board-confirmation v-bind:modal-size="'small'" v-bind:title="'Hapus Board ?'" v-bind:uniq-id="'delete-board-confirmation-modal'" ref="deleteBoardConfirmationModal">
+		<modal-delete-board-confirmation v-bind:modal-size="'small'" v-cloak v-bind:title="'Hapus Board ?'" v-bind:uniq-id="'delete-board-confirmation-modal'" ref="deleteBoardConfirmationModal">
 			<div class="col-md-12">
 				<div class="pull-right">
 					<button class="btn btn-danger">Ya</button>
