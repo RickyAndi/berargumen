@@ -26,7 +26,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async((id, done) => {
   try {
-    const user = await(User.findOne({ _id : id }, 'displayName'));
+    const user = await(User.findOne({ _id : id }, 'displayName profilePicUrl'));
     return done(null, user)
   } catch (error) {
     return done(error);
