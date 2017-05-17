@@ -167,11 +167,41 @@ new Vue({
     boardCategoryText() {
       return boardCategoryTextHashMap[this.privateState.getCurrentBoardCategory()];
     },
-    stillLoadingMore() {
-      return this.privateState.stillLoadingMore();
-    },
     isAnyNextPage() {
       return this.privateState.isAnyNextPage();
+    },
+    isLoadMoreLoading() {
+      return this.privateState.isLoading('loadMore');
+    },
+    isLoadBoardLoading() {
+      return this.privateState.isLoading('board')
+    },
+    boardError() {
+      return this.privateState.getError('board');
+    },
+    loadMoreError() {
+      return this.privateState.getError('loadMore');
+    },
+    boards() {
+      return this.privateState.getBoards();
+    },
+    viewBoardsLists() {
+      return !this.isLoadBoardLoading && !this.boardError;
+    },
+    isUserLogin() {
+      return this.privateState.getUserLoginState()
+    },
+    viewLoadBoardError() {
+      return this.boardError;
+    },
+    viewLoadMoreLoading() {
+      return this.isLoadMoreLoading;
+    },
+    viewLoadMoreError() {
+      return this.loadMoreError;
+    },
+    viewThereIsNoBoardsToLoad() {
+      return !this.loadMoreError && !this.isAnyNextPage && !this.isLoadMoreLoading && !this.isLoadBoardLoading
     }
   },
   mounted() {
