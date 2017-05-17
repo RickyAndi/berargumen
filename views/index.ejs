@@ -330,7 +330,7 @@
 								</div>
 								<div class="panel-body">
 									<button 
-										v-bind:disabled="privateState.getLoadingState()"
+										v-bind:disabled="isLoadBoardLoading"
 										
 										@click="setCurrentBoardCategory(privateState.boardCategory.ALL)" 
 										
@@ -343,7 +343,7 @@
 										</strong>
 									</button>
 									<button 
-										v-bind:disabled="privateState.getLoadingState()"
+										v-bind:disabled="isLoadBoardLoading"
 
 										@click="setCurrentBoardCategory(privateState.boardCategory.MY)" 
 										
@@ -356,7 +356,7 @@
 										</strong>
 									</button>
 									<button 
-										v-bind:disabled="privateState.getLoadingState()"
+										v-bind:disabled="isLoadBoardLoading"
 
 										@click="setCurrentBoardCategory(privateState.boardCategory.COLLABORATED)"
 										
@@ -369,7 +369,7 @@
 										</strong>
 									</button>
 									<button 
-										v-bind:disabled="privateState.getLoadingState()"
+										v-bind:disabled="isLoadBoardLoading"
 										
 										@click="setCurrentBoardCategory(privateState.boardCategory.BOOKMARKED)" 
 										
@@ -397,46 +397,56 @@
 						<div class="col-md-12">
 							<div class="create-board-box">
 								<h4><strong>Buat Argumen Anda !!!!</strong></h4>
-								<button v-if="!privateState.getUserLoginState()" @click="createBoardButNotLoggedIn()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
--								<button v-if="privateState.getUserLoginState()" @click="showSubmitBoardModalToCreate()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
+								<button v-if="!isUserLogin" @click="createBoardButNotLoggedIn()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
+-								<button v-if="isUserLogin" @click="showSubmitBoardModalToCreate()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
 							</div>
                     	</div>
 						<div class="col-md-12">
 							<div 
 								class="row board-list-container" 
 								v-infinite-scroll="loadMoreBoards"
-								infinite-scroll-disabled="stillLoadingMore"
+								infinite-scroll-disabled="isLoadMoreLoading"
 							>
 								<transition-group name="fade">
-									<board-component v-for="(board, index) in privateState.getBoards()" 
+									<board-component v-for="(board, index) in boards" 
 										:board="board" 
 										:key="board.getId()"
 										:index="index"
-										:is-current-user-logged-in="privateState.getUserLoginState()"
+										:is-current-user-logged-in="isUserLogin"
 										@vote-but-not-logged-in="voteButNotLoggedIn"
 										@show-collaborator="showCollaborators"
 										@change-board="showSubmitBoardModalToEdit"
 										@delete-board="showDeleteModalConfirmation"
 										@publish-board="publishBoard"
 										@unpublish-board="unpublishBoard"
-										v-if="!privateState.getLoadingState()"
+										v-if="viewBoardsLists"
 									>
 									</board-component>
 								</transition-group>
 								<transition name="fade">
-									<div class="col-md-12 text-center" v-if="stillLoadingMore">
+									<div class="col-md-12 text-center" v-if="viewLoadBoardError">
+										<h2>Sorry ada error .. :(</h2>
+									</div>
+								</transition>
+								<transition name="fade">
+									<div class="col-md-12 text-center" v-if="viewLoadMoreLoading">
 										<h2>...Loading</h2>
 									</div>
 								</transition>
 								<transition name="fade">
-									<div class="col-md-12 text-center" v-if="!isAnyNextPage && !stillLoadingMore && !privateState.getLoadingState()">
-										<h4>Dah gak ada nyang bisa diload bro .. :( </h4>
+									<div class="col-md-12 text-center" v-if="viewThereIsNoBoardsToLoad">
+										<h4>Dah mentok bro, jangan scroll terus :( </h4>
+									</div>
+								</transition>
+								<transition name="fade">
+									<div class="col-md-12 text-center" v-if="viewLoadMoreError">
+										<h4>Sorry bro, ada error, bentar, jangan nyecroll terus .. :/</h4>
 									</div>
 								</transition>
 							</div>
 						</div>
 						<transition name="fade">
-							<div  v-if="privateState.getLoadingState()" class="col-md-12 text-center" style="padding: 50px;">
+							<div  v-if="isLoadBoardLoading" class="col-md-12 text-center" style="padding: 50px;">
 								<img width="140px" height="140px" src="/builds/css/circle-loading.gif" alt="">
 							</div>
 						</transition>
