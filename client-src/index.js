@@ -112,7 +112,7 @@ new Vue({
     },
     createBoardButNotLoggedIn() {
       this.messages.loginModal.error = true;
-      this.messages.loginModal.content = 'Whoops, untuk membuat board anda harus login terlebih dahulu';
+      this.messages.loginModal.content = 'Whoops, untuk membuat argumen anda harus login terlebih dahulu';
       this.$refs.loginModal.show();
     },
     showSubmitBoardModal() {
@@ -202,6 +202,12 @@ new Vue({
     },
     viewThereIsNoBoardsToLoad() {
       return !this.loadMoreError && !this.isAnyNextPage && !this.isLoadMoreLoading && !this.isLoadBoardLoading
+    },
+    warnThatUserCannotViewBoardExceptAllBoard() {
+      return !this.isUserLogin && (this.privateState.getCurrentBoardCategory() !== this.privateState.boardCategory.ALL);
+    },
+    noBoardsToBeViewed() {
+      return this.boards.length === 0;
     }
   },
   mounted() {
