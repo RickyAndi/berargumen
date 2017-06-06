@@ -25,22 +25,26 @@ const board = Vue.component('board', {
   methods : {
     upvote() {
       this.$emit('upvote', { 
-        index : this.index
+        index : this.index,
+        boardId : this.board.getId()
       });
     },
     downvote() {
       this.$emit('downvote', {
-        index : this.index
+        index : this.index,
+        boardId : this.board.getId()
       });
     },
     removeDownvote() {
       this.$emit('remove-downvote', {
-        index : this.index
+        index : this.index,
+        boardId : this.board.getId()
       });
     },
     removeUpvote() {
       this.$emit('remove-upvote', { 
-        index : this.index
+        index : this.index,
+        boardId : this.board.getId()
       });
     },
     showCollaborators() {
@@ -55,22 +59,26 @@ const board = Vue.component('board', {
       this.$emit('vote-but-not-logged-in', { voteType : 'vote-down' })
     },
     changeBoard() {
-      this.$emit('change-board', { 
+      this.$emit('change-board', {
+        boardId : this.board.getId(),
         index : this.index
       });
     },
     deleteBoard() {
       this.$emit('delete-board', {
+        boardId : this.board.getId(),
         index : this.index
       })
     },
     publishBoard() {
       this.$emit('publish-board', {
+        boardId : this.board.getId(),
         index : this.index
       })
     },
     unpublishBoard() {
       this.$emit('unpublish-board', {
+        boardId : this.board.getId(),
         index : this.index
       })
     },
@@ -82,6 +90,18 @@ const board = Vue.component('board', {
     },
     seeLessDescription() {
       this.viewFullDescription = false;
+    },
+    bookmark() {
+      this.$emit('bookmark', {
+        boardId : this.board.getId(),
+        index : this.index
+      });
+    },
+    removeBookmark() {
+      this.$emit('remove-bookmark', {
+        boardId : this.board.getId(),
+        index : this.index
+      });
     }
   }
 })
