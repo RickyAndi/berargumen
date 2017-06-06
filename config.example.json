@@ -1,12 +1,38 @@
 {
-  "appPort" : 3000,
-  "dbName" : "berargumen",
-  "secretSession" : "keyboardCat",
+  "appPort" : {
+    "production": 5000,
+    "development": 3000
+  },
+  "dbName" : {
+    "production": "",
+    "development": ""
+  },
+  "testDbName" : "",
+  "secretSession" : "",
   "facebookApp" : {
-    "clientId" : "",
-    "clientSecret" : "",
-    "callbackUrl" : "",
-    "profileFields" : [
-    ]
+    "production" : {
+      "clientId" : "",
+      "clientSecret" : "",
+      "callbackUrl" : "",
+      "profileFields" : [
+        "id", 
+        "displayName", 
+        "link", 
+        "photos", 
+        "emails"
+      ]
+    },
+    "development" : {
+      "clientId" : "",
+      "clientSecret" : "",
+      "callbackUrl" : "",
+      "profileFields" : [
+        "id", 
+        "displayName", 
+        "link", 
+        "photos", 
+        "emails"
+      ]
+    }
   }
 }
