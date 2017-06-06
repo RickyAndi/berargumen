@@ -2,11 +2,10 @@ const Mongoose = require('../mongoose');
 const Schema = Mongoose.Schema;
 
 const schema = new Schema({
-  creatorId : {
+  creator : {
     type : Schema.Types.ObjectId, 
     ref : 'User' 
   },
-  title : String,
   content : String,
   type : String,
   top : String,
@@ -24,7 +23,7 @@ const schema = new Schema({
       type : String
     }  
   },
-  boardId : { 
+  board : { 
     type : Schema.Types.ObjectId, 
     ref : 'Board' 
   },
@@ -39,18 +38,6 @@ const schema = new Schema({
   toObject : {
     virtuals : true
   }
-});
-
-schema.virtual('board', {
-  ref : 'Board',
-  localField : 'boardId',
-  foreignField : '_id'
-});
-
-schema.virtual('creator', {
-  ref : 'User',
-  localField : 'creatorId',
-  foreignField : '_id'
 });
 
 schema.virtual('relatedCard', {

@@ -1,22 +1,34 @@
 const Mongoose = require('../mongoose');
 const Schema = Mongoose.Schema;
 const mongoosePaginate = require('mongoose-paginate');
+const slug = require('mongoose-slug-generator');
 
 const schema = new Schema({
-  creator : {
-    type : Schema.ObjectId, 
-    ref : 'User' 
+  creator: {
+    type: Schema.ObjectId, 
+    ref: 'User' 
   },
-  title : String,
-  description : String,
-  updated : { 
+  title: String,
+  description: String,
+  updated: { 
     type: Date, 
     default: Date.now 
   },
-  tags : [String],
-  topic : String,
-  published : Boolean,
-  slug : String
+  tags: [String],
+  published: Boolean,
+  slug: { 
+    type: String, 
+    slug: "title",
+    unique: true
+  },
+  arguers : [{
+    type : Schema.ObjectId, 
+    ref : 'User' 
+  }],
+  deleted : {
+    type : Boolean,
+    default: false
+  }
 }, {
   toJSON : {
     virtuals : true
@@ -62,35 +74,55 @@ schema.virtual('countOfArguers').get(function() {
 });
 
 schema.virtual('countOfUpvote').get(function() {
-  return 0;
+  if(this.upvotes === null) {
+    return 0;
+  }
+  return this.upvotes[0].users.length
 });
 
 schema.virtual('countOfDownvote').get(function() {
-  return 0;
+  if(this.downvotes === null) {
+    return 0;
+  }
+  return this.downvotes[0].users.length
+});
+
+schema.virtual('isBelongToCurrentUser').get(function() {
+  return false;
+});
+
+schema.virtual('isBookmarkedByCurrentUser').get(function() {
+  return false;
 });
 
 schema.virtual('cards', {
   ref : 'Card',
   localField : '_id',
-  foreignField : 'boardId'
+  foreignField : 'board'
 });
 
 schema.virtual('arguerRequests', {
   ref : 'ArguerRequests',
   localField : '_id',
-  foreignField : 'boardId'
+  foreignField : 'board'
 });
 
 schema.virtual('rejectedArguerRequests', {
   ref : 'RejectedArguerRequests',
   localField : '_id',
-  foreignField : 'boardId'
+  foreignField : 'board'
 });
 
-schema.virtual('arguers', {
-  ref : 'BoardArguers',
+schema.virtual('upvotes', {
+  ref : 'Upvote',
   localField : '_id',
-  foreignField : 'boardId'
+  foreignField : 'board'
+});
+
+schema.virtual('downvotes', {
+  ref : 'Downvote',
+  localField : '_id',
+  foreignField : 'board'
 });
 
 schema.index({ 
@@ -99,6 +131,7 @@ schema.index({
   tags : 'text'
 });
 
+schema.plugin(slug);
 schema.plugin(mongoosePaginate);
 
 module.exports = Mongoose.model('Board', schema);

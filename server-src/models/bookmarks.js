@@ -2,20 +2,14 @@ const Mongoose = require('../mongoose');
 const Schema = Mongoose.Schema;
 
 const schema = new Schema({
-  userId : {
+  user : {
     type : Schema.Types.ObjectId, 
     ref : 'User' 
   },
-  boardIds : [{
+  boards : [{
     type : Schema.Types.ObjectId, 
     ref : 'Board'
   }]
-});
-
-schema.virtual('bookmarkedBoards', {
-  ref : 'Board',
-  localField : 'boardIds',
-  foreignField : '_id'
 });
 
 module.exports = Mongoose.model('Bookmarks', schema);

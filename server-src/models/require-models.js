@@ -7,4 +7,6 @@ module.exports = () => {
   require('./rejected-arguer-requests');
   require('./tag');
   require('./user');
+  require('./upvote');
+  require('./downvote');
 }
