@@ -1,5 +1,4 @@
 const Vue = require('vue');
-const Taggle = require('taggle');
 const axios = require('axios');
 const Rx = require('rxjs');
 const infiniteScroll = require('vue-infinite-scroll');
@@ -9,19 +8,16 @@ const paginationComponent = require('./vue_components/pagination');
 const modalComponent = require('./vue_components/modal');
 const collaboratorsViewComponent = require('./vue_components/collaborators-view');
 const topicSelectorComponent = require('./vue_components/topic-selector');
+const inputTagComponent = require('./vue_components/vue-input-tag');
+const argumentForm = require('./vue_components/argument-form');
 
 const Board = require('./models/board');
 const User = require('./models/user');
-
 const OddNumber = require('./object_values/odd-number');
-
 const boardCategoryTextHashMap = require('./consts/board-category-text-hash-map');
-
 const boardFactory = require('./factories/board-factory');
-
 const boardService = require('./services/board');
 const pageDataService = require('./services/page-data');
-
 const privateState = require('./states/index');
 
 new Vue({
@@ -31,48 +27,63 @@ new Vue({
     'board-component' : boardComponent,
     'pagination-component' : paginationComponent,
     'modal-login' : modalComponent,
-    'modal-collaborators' : modalComponent,
     'modal-submit-board' : modalComponent,
     'modal-delete-board-confirmation' : modalComponent,
-    
-    'collaborators-view' : collaboratorsViewComponent,
-    'topic-selector' : topicSelectorComponent
+    'input-tag-component' : inputTagComponent,
+    'argument-form': argumentForm
   },
   data : {
-
     //data state
     privateState : privateState,
-
     //component state
     subjects : {
       searchQuery : new Rx.Subject()
     },
-    inputs : {
-      tags : null
+    errorMessages : {
+      'vote-up' : 'Hei, untuk vote up argumen ini anda harus login terlebih dahulu',
+      'vote-down' : 'Hei, untuk vote down argumen ini anda harus login terlebih dahulu' 
     },
-    messages : {
-      loginModal : {
-        error : false,
-        content : ''
+    messages: {
+      loginModal: {
+        error: false,
+        content: ''
       }
     },
-    errorMessages : {
-      'vote-up' : 'Whoops, untuk vote up board ini anda harus login terlebih dahulu',
-      'vote-down' : 'Whoops, untuk vote down board ini anda harus login terlebih dahulu' 
-    },
-    meta : {
-      submitBoardModalTitle : 'Argumen',
-      numberOfPaginationDisplayed : new OddNumber(7),
-    }
+    currentUserProfilePicUrl : null,
+    currentUserName : null,
+    boardIdToBeDeleted : null,
+    boardIndexToBeDeleted : null,
+    boardIdToBeEdited : null,
+    boardIndexToBeEdited : null,
   },
   methods : {
+    onMounted() {
+        this.subjects.searchQuery
+          .debounceTime(1000)
+          .distinctUntilChanged()
+          .subscribe(searchQuery => {
+            this.privateState.setSearchQuery(searchQuery);
+            this.privateState.goToPage(1);
+            this.scrollBoardListToTop();
+          });
+        this.privateState
+          .setService('board', boardService)
+          .setFactory('board', boardFactory);
+        
+        this.getBoards();
+
+        this.getPageData()
+          .then(data => {
+            this.currentUserProfilePicUrl = data.currentUserProfilePicUrl;
+            this.currentUserName = data.currentUserName;
+          });
+    },
     changeBoardTopic(event) {
       this.privateState.setCurrentBoardTopic(event.target.value);
       this.privateState.goToPage(1);
-
     },
-    resetBoardFormState() {
-
+    onArgumenSubmitFormHide() {
+      this.$refs.argumentForm.reset();
     },
     changePage(args) {
       this.privateState.goToPage(args.page);
@@ -92,9 +103,6 @@ new Vue({
     },
     getBoards() {
       return this.privateState.goToPage(1);
-    },
-    showModal(modalName) {
-      this.modals[modalName].modal('show');
     },
     showLoginModal() {
       this.messages.loginModal.error = false;
@@ -122,21 +130,38 @@ new Vue({
       this.$refs.submitBoardModal.hide();
     },
     showSubmitBoardModalToCreate() {
-      this.meta.submitBoardModalTitle = 'Buat Board';
+      this.$refs.argumentForm.setStatus('create');
       this.showSubmitBoardModal();
     },
-    showSubmitBoardModalToEdit() {
-      this.meta.submitBoardModalTitle = 'Ubah Board';
+    showSubmitBoardModalToEdit(args) {
+      this.$refs.argumentForm.setStatus('edit');
+      const data = this.privateState.getBoardDataToEdit(args.index);
+      this.$refs.argumentForm.setFormData(data);
+      
+      this.boardIdToBeEdited = args.boardId;
+      this.boardIndexToBeEdited = args.index;
+      
       this.showSubmitBoardModal();
     },
-    publishBoard() {
-
+    publishBoard(args) {
+      const boardId = args.boardId;
+      boardService.publish(boardId)
+        .then((data) => {
+          this.privateState.setBoardPublicationState(args.index, true);
+        })
     },
-    unpublishBoard() {
-
+    unpublishBoard(args) {
+      const boardId = args.boardId;
+      boardService.unpublish(boardId)
+        .then((data) => {
+          this.privateState.setBoardPublicationState(args.index, false)
+        })
     },
     showDeleteModalConfirmation() {
       this.$refs.deleteBoardConfirmationModal.show();
+    },
+    hideDeleteModalConfirmation() {
+       this.$refs.deleteBoardConfirmationModal.hide();
     },
     setCurrentBoardCategory(boardCategory) {
       privateState.setCurrentBoardCategory(boardCategory);
@@ -152,7 +177,16 @@ new Vue({
       this.scrollBoardListToTop();
     },
     facebookLogin() {
-      window.location.href="/auth/facebook"
+      window.location.href="/auth/facebook";
+    },
+    localLogin() {
+      window.location.href="/auth/local";
+    },
+    goToProfilePage() {
+      window.location.href="/profile"
+    },
+    logout() {
+      window.location.href="/auth/logout";
     },
     loadMoreBoards() {
       this.privateState.loadMoreBoards();
@@ -161,6 +195,88 @@ new Vue({
       const boardList = document.querySelector('.board-list-container');
       const topPos = boardList.offsetTop;
       boardList.scrollTop = 0;
+    },
+    upvote(args) {
+      return boardService.upvote(args.boardId)
+        .then((data) => {
+          this.privateState.currentUserUpvoteBoard(args.index);
+        })
+    },
+    downvote(args) {
+      return boardService.downvote(args.boardId)
+        .then((data) => {
+          this.privateState.currentUserDownvoteBoard(args.index);
+        })
+    },
+    removeUpvote(args) {
+      return boardService.removeUpvote(args.boardId)
+        .then((data) => {
+          this.privateState.currentUserNotUpvoteBoard(args.index);
+        })
+    },
+    removeDownvote(args) {
+      return boardService.removeDownvote(args.boardId)
+        .then((data) => {
+          this.privateState.currentUserNotDownvoteBoard(args.index);
+        });
+    },
+    bookmark(args) {
+      return boardService.bookmark(args.boardId)
+        .then((data) => {
+          this.privateState.currentUserBookmarkBoard(args.index);
+        });
+    },
+    removeBookmark(args) {
+      return boardService.removeBookmark(args.boardId)
+        .then((data) => {
+          this.privateState.currentUserRemoveBookmarkBoard(args.index);
+        });
+    },
+    handleDeleteBoard(args) {
+      this.boardIdToBeDeleted = args.boardId;
+      this.boardIndexToBeDeleted = args.index;
+      this.showDeleteModalConfirmation();
+    },
+    deleteBoard() {
+      const toBeDeletedBoardId = this.boardIdToBeDeleted;
+      return boardService.deleteBoard(toBeDeletedBoardId)
+        .then((data) => {
+          this.hideDeleteModalConfirmation();
+          this.privateState.removeBoard(this.boardIndexToBeDeleted);
+        })
+    },
+    closeSubmitBoardModal() {
+       this.hideSubmitBoardModal();
+    },
+    saveArgument(argumentData) {
+      this.$refs.argumentForm.setLoading(true);
+
+      if(this.$refs.argumentForm.statusIsCreate()) {
+        return boardService.create(argumentData)
+          .then((data) => {
+            console.log(data)
+            this.$refs.argumentForm.setLoading(false);
+            this.hideSubmitBoardModal();
+            window.open('/board/' + data.slug);
+          })
+          .catch((error) => {
+            if(error.data.validationError) {
+              this.$refs.argumentForm.setError(error.data.errors);
+            }
+
+            this.$refs.argumentForm.setLoading(false);
+          })
+      }
+
+      return boardService.editBoard(this.boardIdToBeEdited, argumentData)
+        .then((data) => {
+          this.$refs.argumentForm.setLoading(false);
+          this.hideSubmitBoardModal();
+        })
+        .catch((error) => {
+          console.log(error)
+          this.$refs.argumentForm.setLoading(false);
+        })
     }
   },
   computed : {
@@ -211,28 +327,6 @@ new Vue({
     }
   },
   mounted() {
-    this.subjects.searchQuery
-      .debounceTime(1000)
-      .distinctUntilChanged()
-      .subscribe(searchQuery => {
-        this.privateState.setSearchQuery(searchQuery);
-        this.privateState.goToPage(1);
-        this.scrollBoardListToTop();
-      })
-
-    this.inputs.tags = new Taggle('tagsinput', {
-      placeholder : 'Masukan Tags'
-    });
-
-    this.privateState
-      .setService('board', boardService)
-      .setFactory('board', boardFactory);
-    
-    this.getBoards();
-    
-    this.getPageData()
-      .then(data => {
-        console.log(data)
-      });
+    this.onMounted();
   }
 }) 
