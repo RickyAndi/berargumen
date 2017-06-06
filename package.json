@@ -7,7 +7,8 @@
     "dev": "NODE_ENV=development nodemon server.js",
     "prod": "NODE_ENV=production nodemon server.js",
     "testclient": "./node_modules/karma/bin/karma start karma.conf.js",
-    "testserver": "./node_modules/mocha/bin/mocha server-src/tests/**"
+    "testserver": "./node_modules/mocha/bin/mocha server-src/tests/**",
+    "seed-user": "NODE_ENV=development node server-src/seeders/user-test.js"
   },
   "author": "",
   "license": "ISC",
