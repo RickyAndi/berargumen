@@ -9,12 +9,12 @@ class Board {
     this.countOfRebuttal = null;
     this.arguers = [];
     this.tags = [];
-    this.topic = null;
     this.downvote = null;
     this.upvote = null;
     this.isCurrentUserUpvoted = false;
     this.isCurrentUserDownvoted = false;
     this.isBelongToCurrentUser = false;
+    this.isBookmarkedByCurrentUser = false;
     this.isPublished = false;
     this.slug = null;
   }
@@ -131,16 +131,7 @@ class Board {
   getTags () {
     return this.tags;
   }
-
-  setTopic (topic) {
-    this.topic = topic;
-    return this;
-  }
-
-  getTopic () {
-    return this.topic;
-  }
-
+  
   getDownvote () {
     return this.downvote;
   }
@@ -202,6 +193,57 @@ class Board {
 
   getSlug() {
     return this.slug;
+  }
+
+  currentUserDoUpvote() {
+    this.setIsCurrentUserUpvoted(true);
+    const upvoteCount = this.getUpvote();
+    const nextUpvoteCount = upvoteCount + 1;
+    this.setUpvote(nextUpvoteCount);
+
+    if(this.currentUserDownvoted()) {
+      this.setIsCurrentUserDownvoted(false);
+      const downvoteCount = this.getDownvote();
+      const nextDownvoteCount = downvoteCount - 1;
+      this.setDownvote(nextDownvoteCount);
+    }
+  }
+
+  currentUserDoDownvote() {
+    this.setIsCurrentUserDownvoted(true);
+    const downvoteCount = this.getDownvote();
+    const nextDownvoteCount = downvoteCount + 1;
+    this.setDownvote(nextDownvoteCount);
+
+    if(this.currentUserUpvoted()) {
+      this.setIsCurrentUserUpvoted(false);
+      const upvoteCount = this.getUpvote();
+      const nextUpvoteCount = upvoteCount - 1;
+      this.setUpvote(nextUpvoteCount);
+    }
+  }
+
+  currentUserDoRemoveUpvote() {
+    this.setIsCurrentUserUpvoted(false);
+    const upvoteCount = this.getUpvote();
+    const nextUpvoteCount = upvoteCount - 1;
+    this.setUpvote(nextUpvoteCount);
+  }
+
+  currentUserDoRemoveDownvote() {
+    this.setIsCurrentUserDownvoted(false);
+    const downvoteCount = this.getDownvote();
+    const nextDownvoteCount = downvoteCount - 1;
+    this.setDownvote(nextDownvoteCount);
+  }
+
+  bookmarkedByCurrentUser() {
+    return this.isBookmarkedByCurrentUser;
+  }
+
+  setIsCurrentUserBookmarked(bool) {
+    this.isBookmarkedByCurrentUser = bool;
+    return this;
   }
 };
 
