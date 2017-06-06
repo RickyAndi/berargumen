@@ -19,15 +19,17 @@ module.exports = () => {
     res.redirect('/')
   });
   
-  router.get('/local', (req, res, next) => {
-    req.body = {
-      username : 'jancok',
-      password: 'jancok'
-    }
-    passport.authenticate('local', { failureRedirect : '/'})(req, res, next);
-  },(req, res, next) => {
-    res.redirect('/');
-  });
-
+  if(process.env.NODE_ENV === 'development') {
+    router.get('/local', (req, res, next) => {
+      req.body = {
+        username : 'jancok',
+        password: 'jancok'
+      }
+      passport.authenticate('local', { failureRedirect : '/'})(req, res, next);
+    },(req, res, next) => {
+      res.redirect('/');
+    });
+  }
+  
   return router;
 };
