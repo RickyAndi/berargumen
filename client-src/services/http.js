@@ -18,7 +18,7 @@ module.exports = (() => {
     if(data == null) {
       data = {}
     }
-    return axios.post(url, data);
+    return axios.put(url, data);
   }
 
   function remove(url) {
