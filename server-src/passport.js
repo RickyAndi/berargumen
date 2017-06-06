@@ -6,10 +6,10 @@ const { async, await } = require('asyncawait');
 const config = require('../config.json');
 
 passport.use(new FacebookStrategy({
-  clientID: config.facebookApp.clientId,
-  clientSecret: config.facebookApp.clientSecret,
-  callbackURL: config.facebookApp.callbackUrl,
-  profileFields: config.facebookApp.profileFields
+  clientID: config.facebookApp[process.env.NODE_ENV].clientId,
+  clientSecret: config.facebookApp[process.env.NODE_ENV].clientSecret,
+  callbackURL: config.facebookApp[process.env.NODE_ENV].callbackUrl,
+  profileFields: config.facebookApp[process.env.NODE_ENV].profileFields
 },
   async((accessToken, refreshToken, profile, done) => {
     try {
@@ -21,22 +21,24 @@ passport.use(new FacebookStrategy({
   })
 ));
 
-passport.use(new LocalStrategy({
-  usernameField: 'username',
-  passwordField: 'password',
-}, async(function(username, password, done) {
-  try {
-    const user = await(userService.findOne({ 
-      query : {
-        email : 'admin@admin.com' 
-      },
-      select :  null
-    }));
-    return done(null, user)
-  } catch(error) {
-    return done(error)
-  }
+if(process.env.NODE_ENV === 'development') {
+  passport.use(new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+  }, async(function(username, password, done) {
+    try {
+      const user = await(userService.findOne({ 
+        query : {
+          email : 'admin@admin.com' 
+        },
+        select :  null
+      }));
+      return done(null, user)
+    } catch(error) {
+      return done(error)
+    }
 })));
+}
 
 passport.serializeUser((user, done) => {
   done(null, user._id);
