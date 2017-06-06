@@ -627,11 +627,6 @@
 													<span style="font-size: 17px; font-weight:bold;">Masuk Dengan Facebook</span>
 												</button>	
 											</div>
-											<div class="col-md-12">
-												<button @click="localLogin()" class="btn btn-default btn-block">
-													<span style="font-size: 17px; font-weight:bold;">Admin login</span>
-												</button>	
-											</div>
 										</div>	
 									</div>
 								</div>
@@ -665,7 +660,8 @@
 			</div>
 		</modal-submit-board>
 
-		<modal-delete-board-confirmation 
+		<modal-delete-board-confirmation
+			v-cloak
 			:options="{
 				withHeader: true, 
 				title: 'Hapus Argument ?', 
