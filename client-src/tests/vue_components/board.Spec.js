@@ -38,48 +38,29 @@ describe('Board component', function() {
     unpublishBoardCallback = sinon.spy();
 
     boardDataFromServer = {
-      id : 'abcdefghijklmn',
+      _id : 'abcdefghijklmn',
       title : 'aku adalah anak gembala',
       description : 'lorem ipsum dolor',
-      user : {
-        name : 'Budiman',
+      creator : {
+        displayName : 'Budiman',
         profilePictureUrl : 'http://google.com',
-        getName : function() {
-          return this.name;
-        },
-        getProfilePictureUrl : function() {
-          return this.profilePictureUrl;
-        }
       },
       countOfReason : 10,
       countOfObjection : 20,
       countOfRebuttal : 25,
-      collaborators :  [
+      arguers :  [
         {
-          name : 'Budiman',
+          displayName : 'Budiman',
           profilePictureUrl : 'http://google.com',
-          getName : function() {
-            return this.name;
-          },
-          getProfilePictureUrl : function() {
-            return this.profilePictureUrl;
-          }   
         },
         {
-          name : 'Ilham Mansiz',
+          displayName : 'Ilham Mansiz',
           profilePictureUrl : 'http://duckduckgo.com',
-          getName : function() {
-            return this.name;
-          },
-          getProfilePictureUrl : function() {
-            return this.profilePictureUrl;
-          }
         },
       ],
       tags : ['aku', 'adalah', 'anak'],
-      topic : 'Universe',
-      downvote : 100,
-      upvote : 20,
+      countOfDownvote : 100,
+      countOfUpvote : 20,
       isCurrentUserUpvoted : false,
       isCurrentUserDownvoted : false,
       isBelongToCurrentUser : true,
@@ -87,48 +68,30 @@ describe('Board component', function() {
     }
 
     boardDataFromServer2 = {
-      id : 'abcdefghijklmn',
+      _id : 'abcdefghijklmn',
       title : 'aku adalah anak gembala',
       description : 'lorem ipsum dolor',
-      user : {
-        name : 'Budiman',
+      creator : {
+        displayName : 'Budiman',
         profilePictureUrl : 'http://google.com',
-        getName : function() {
-          return this.name;
-        },
-        getProfilePictureUrl : function() {
-          return this.profilePictureUrl;
-        }
       },
       countOfReason : 10,
       countOfObjection : 20,
       countOfRebuttal : 25,
-      collaborators :  [
+      arguers :  [
         {
-          name : 'Budiman',
+          displayName : 'Budiman',
           profilePictureUrl : 'http://google.com',
-          getName : function() {
-            return this.name;
-          },
-          getProfilePictureUrl : function() {
-            return this.profilePictureUrl;
-          }   
         },
         {
-          name : 'Ilham Mansiz',
+          displayName : 'Ilham Mansiz',
           profilePictureUrl : 'http://duckduckgo.com',
-          getName : function() {
-            return this.name;
-          },
-          getProfilePictureUrl : function() {
-            return this.profilePictureUrl;
-          }
         },
       ],
       tags : ['aku', 'adalah', 'anak'],
       topic : 'Universe',
-      downvote : 100,
-      upvote : 20,
+      countOfDownvote : 100,
+      countOfUpvote : 20,
       isCurrentUserUpvoted : false,
       isCurrentUserDownvoted : false,
       isBelongToCurrentUser : false,
@@ -284,9 +247,9 @@ describe('Board component', function() {
     expect(countOfRebuttal).to.equal(expectedText);
   })
 
-  it('can get count of collaborators in its dom', function() {
+  it('can get count of arguers in its dom', function() {
     var countOfCollaborators = $(vm1.$el).find('.arguers-count').text();
-    var expectedText = boardInstance.getCountOfCollaborators() + ' Arguer';
+    var expectedText = boardInstance.getCountOfArguers() + ' Arguer';
     expect(countOfCollaborators).to.equal(expectedText);
   })
 
@@ -323,21 +286,15 @@ describe('Board component', function() {
   })
 
   it('can get right number of upvote in its dom', function() {
-    var upvoteCountInDom = $(vm1.$el).find('.col-md-12').find('.upvote-count').text();
+    var upvoteCountInDom = $(vm1.$el).find('.upvote-count').eq(0).text();
     expect(parseInt(upvoteCountInDom)).to.equal(boardInstance.getUpvote());
   })
 
   it('can get right number of downvote in its dom', function() {
-    var downvoteCountInDom = $(vm1.$el).find('.col-md-12').find('.downvote-count').text();
+    var downvoteCountInDom = $(vm1.$el).find('.downvote-count').eq(0).text();
     expect(parseInt(downvoteCountInDom)).to.equal(boardInstance.getDownvote());
   })
-
-  it('can get right topic in its dom', function() {
-    var topic = $(vm1.$el).find('.board-topic').text();
-    var expectedTopicTextInDom =  boardInstance.getTopic(); 
-    expect(topic).to.equal(expectedTopicTextInDom);
-  })
-
+  
   it('when upvote event emit, it invoke callback in its parent with argument', function() {
     vm1.$refs.boardComponent.upvote();
     expect(upvoteCallback.called).to.be.true;
@@ -463,7 +420,7 @@ describe('Board component', function() {
         
         vm1.$refs.boardComponent.changeBoard();
         
-        var expectedArgument = { index : 1};
+        var expectedArgument = { index : 1, boardId: 'abcdefghijklmn' };
 
         expect(changeBoardCallback.called).to.be.true;
         expect(changeBoardCallback.args[0][0]).to.eql(expectedArgument);
@@ -473,7 +430,7 @@ describe('Board component', function() {
 
         vm1.$refs.boardComponent.deleteBoard();
         
-        var expectedArgument = { index : 1};
+        var expectedArgument = { index : 1, boardId: 'abcdefghijklmn' };
 
         expect(deleteBoardCallback.called).to.be.true;
         expect(deleteBoardCallback.args[0][0]).to.eql(expectedArgument);
@@ -483,7 +440,7 @@ describe('Board component', function() {
 
         vm1.$refs.boardComponent.publishBoard();
         
-        var expectedArgument = { index : 1};
+        var expectedArgument = { index : 1, boardId: 'abcdefghijklmn' };
 
         expect(publishBoardCallback.called).to.be.true;
         expect(publishBoardCallback.args[0][0]).to.eql(expectedArgument);
@@ -493,7 +450,7 @@ describe('Board component', function() {
 
         vm1.$refs.boardComponent.unpublishBoard();
         
-        var expectedArgument = { index : 1};
+        var expectedArgument = { index : 1, boardId: 'abcdefghijklmn' };
 
         expect(unpublishBoardCallback.called).to.be.true;
         expect(unpublishBoardCallback.args[0][0]).to.eql(expectedArgument);

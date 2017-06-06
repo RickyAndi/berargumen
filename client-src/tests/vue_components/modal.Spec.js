@@ -15,7 +15,12 @@ describe('modal component', function() {
       template : 
       `
         <div>
-          <modal-component ref="exampleModal"  v-bind:modal-size="'small'" v-bind:title="'example modal'" v-bind:uniq-id="'example-modal'">
+          <modal-component 
+            ref="exampleModal"  
+            :options="{
+              modalSize: 'small',
+              title: 'example modal'
+            }">
             <div class="col-md-12">
               <h2>Hello World</h2>
             </div>

@@ -2,36 +2,35 @@ var expect = require('chai').expect;
 var Board = require('./../../models/board');
 
 describe('Board Model', function() {
-  
-  var fakeUser = {
+  const fakeUser = {
     name : 'Budiman',
     profilePictureUrl : 'http://google.com',
-    getName : function() {
+    getName() {
       return this.name;
     },
-    getProfilePictureUrl : function() {
+    getProfilePictureUrl() {
       return this.profilePictureUrl;
     }
   }
 
-  var fakeCollaborators = [
+  const fakeCollaborators = [
     {
       name : 'Budiman',
       profilePictureUrl : 'http://google.com',
-      getName : function() {
+      getName() {
         return this.name;
       },
-      getProfilePictureUrl : function() {
+      getProfilePictureUrl() {
         return this.profilePictureUrl;
       }   
     },
     {
       name : 'Ilham Mansiz',
       profilePictureUrl : 'http://duckduckgo.com',
-      getName : function() {
+      getName() {
         return this.name;
       },
-      getProfilePictureUrl : function() {
+      getProfilePictureUrl() {
         return this.profilePictureUrl;
       }
     }
@@ -83,16 +82,16 @@ describe('Board Model', function() {
   });
 
   it('it get false if user is set', function() {
-    expect(boardInstanceA.isUserNull()).to.equal(false);
+    expect(boardInstanceA.isUserNull()).to.not.be.true;
   })
 
   it('it get true if user is set', function() {
-    expect(boardInstanceB.isUserNull()).to.equal(true);
+    expect(boardInstanceB.isUserNull()).to.be.true;
   })
 
   it('can set collaborators and get count', function() {
-    boardInstanceA.setCollaborators(boardData.collaborators);
-    expect(boardInstanceA.getCountOfCollaborators()).to.equal(boardData.collaborators.length);
+    boardInstanceA.setArguers(boardData.collaborators);
+    expect(boardInstanceA.getCountOfArguers()).to.equal(boardData.collaborators.length);
   })
 
   it('can set count of reason and get it', function(){
@@ -115,12 +114,7 @@ describe('Board Model', function() {
     boardInstanceA.setTags(boardData.tags);
     expect(boardInstanceA.getTags()).to.equal(boardData.tags);
   })
-
-  it('can set topic and retrieve it', function() {
-    boardInstanceA.setTopic(boardData.topic);
-    expect(boardInstanceA.getTopic()).to.equal(boardData.topic);
-  })
-
+  
   describe('board upvoted state by current user', function() {
     it('if not set, will return false', function() {
       expect(boardInstanceA.currentUserUpvoted()).to.equal(false);

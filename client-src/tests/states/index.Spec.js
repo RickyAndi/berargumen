@@ -19,169 +19,165 @@ describe('state index', function() {
       {
         title : 'Tuhan ada',
         description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultrices, libero ac laoreet pellentesque, dui eros congue eros, ut consectetur magna ex eu magna. Proin feugiat ornare euismod. Donec in quam pharetra, gravida dolor et, eleifend lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed sit amet mattis tellus, sit amet varius tellus. Quisque massa nisl, tincidunt quis nibh et, tincidunt efficitur erat. Phasellus vestibulum dictum dictum. Donec dolor libero, blandit vestibulum dignissim non, accumsan vitae mi. Integer eu quam vel urna efficitur molestie. Morbi ullamcorper tempus ante. Nulla turpis dui, vestibulum eu pulvinar nec, fermentum eu quam. Nunc a sem non nulla eleifend varius vel ut nunc. Nulla facilisi. In accumsan pulvinar purus in commodo.',
-        topic : 'Agama',
         countOfReason : 10,
         countOfObjection : 20,
         countOfRebuttal : 25,
         tags : ['bumi', 'bulat', 'mama'],
-        downvote : 100,
-        upvote : 20,
+        countOfDownvote : 100,
+        countOfUpvote : 20,
         isCurrentUserUpvoted : true,
         isCurrentUserDownvoted : false,
         isPublished : false,
         isBelongToCurrentUser : true,
-        collaborators : [
+        arguers : [
           {
-            name : 'Budiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Budiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Janjiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Janjiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Ardiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Ardiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Budiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Budiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Janjiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Janjiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Ardiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Ardiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Budiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Budiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Janjiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Janjiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Ardiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Ardiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Budiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Budiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Janjiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Janjiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Ardiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Ardiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           }
         ],
-        user : {
-          name : 'Jangkrikman',
-          profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+        creator : {
+          displayName : 'Jangkrikman',
+          profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
         }
       },
       {
         title : 'Tuhan ada',
         description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultrices, libero ac laoreet pellentesque, dui eros congue eros, ut consectetur magna ex eu magna. Proin feugiat ornare euismod. Donec in quam pharetra, gravida dolor et, eleifend lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed sit amet mattis tellus, sit amet varius tellus. Quisque massa nisl, tincidunt quis nibh et, tincidunt efficitur erat. Phasellus vestibulum dictum dictum. Donec dolor libero, blandit vestibulum dignissim non, accumsan vitae mi. Integer eu quam vel urna efficitur molestie. Morbi ullamcorper tempus ante. Nulla turpis dui, vestibulum eu pulvinar nec, fermentum eu quam. Nunc a sem non nulla eleifend varius vel ut nunc. Nulla facilisi. In accumsan pulvinar purus in commodo.',
-        topic : 'Agama',
         countOfReason : 10,
         countOfObjection : 20,
         countOfRebuttal : 25,
-        downvote : 100,
-        upvote : 20,
+        countOfDownvote : 100,
+        countOfUpvote : 20,
         isCurrentUserUpvoted : false,
         isCurrentUserDownvoted : false,
         isPublished : true,
         isBelongToCurrentUser : false,
         tags : ['bumi', 'bulat', 'mama'],
-        collaborators : [
+        arguers : [
           {
-            name : 'Budiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Budiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Janjiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Janjiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Ardiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Ardiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           }
         ],
-        user : {
-          name : 'Jangkrikman',
-          profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+        creator : {
+          displayName : 'Jangkrikman',
+          profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
         }
       },
       {
         title : 'Tuhan ada',
         description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultrices, libero ac laoreet pellentesque, dui eros congue eros, ut consectetur magna ex eu magna. Proin feugiat ornare euismod. Donec in quam pharetra, gravida dolor et, eleifend lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed sit amet mattis tellus, sit amet varius tellus. Quisque massa nisl, tincidunt quis nibh et, tincidunt efficitur erat. Phasellus vestibulum dictum dictum. Donec dolor libero, blandit vestibulum dignissim non, accumsan vitae mi. Integer eu quam vel urna efficitur molestie. Morbi ullamcorper tempus ante. Nulla turpis dui, vestibulum eu pulvinar nec, fermentum eu quam. Nunc a sem non nulla eleifend varius vel ut nunc. Nulla facilisi. In accumsan pulvinar purus in commodo.',
-        topic : 'Agama',
         countOfReason : 10,
         countOfObjection : 20,
         countOfRebuttal : 25,
-        downvote : 100,
-        upvote : 20,
+        countOfDownvote : 100,
+        countOfUpvote : 20,
         isCurrentUserUpvoted : false,
         isCurrentUserDownvoted : false,
         isPublished : true,
         isBelongToCurrentUser : true,
         tags : ['bumi', 'bulat', 'mama'],
-        collaborators : [
+        arguers : [
           {
-            name : 'Budiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Budiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Janjiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Janjiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Ardiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Ardiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           }
         ],
-        user : {
-          name : 'Jangkrikman',
-          profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+        creator : {
+          displayName : 'Jangkrikman',
+          profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
         }
       },
       {
         title : 'Tuhan ada',
         description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultrices, libero ac laoreet pellentesque, dui eros congue eros, ut consectetur magna ex eu magna. Proin feugiat ornare euismod. Donec in quam pharetra, gravida dolor et, eleifend lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed sit amet mattis tellus, sit amet varius tellus. Quisque massa nisl, tincidunt quis nibh et, tincidunt efficitur erat. Phasellus vestibulum dictum dictum. Donec dolor libero, blandit vestibulum dignissim non, accumsan vitae mi. Integer eu quam vel urna efficitur molestie. Morbi ullamcorper tempus ante. Nulla turpis dui, vestibulum eu pulvinar nec, fermentum eu quam. Nunc a sem non nulla eleifend varius vel ut nunc. Nulla facilisi. In accumsan pulvinar purus in commodo.',
-        topic : 'Agama',
         countOfReason : 10,
         countOfObjection : 20,
         countOfRebuttal : 25,
-        downvote : 100,
-        upvote : 20,
+        countOfDownvote : 100,
+        countOfUpvote : 20,
         isCurrentUserUpvoted : false,
         isCurrentUserDownvoted : false,
         isPublished : true,
         isBelongToCurrentUser : true,
         tags : ['bumi', 'bulat', 'mama'],
-        collaborators : [
+        arguers : [
           {
-            name : 'Budiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Budiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Janjiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Janjiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           },
           {
-            name : 'Ardiman',
-            profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+            displayName : 'Ardiman',
+            profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
           }
         ],
-        user : {
-          name : 'Jangkrikman',
-          profilePictureUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
+        creator : {
+          displayName : 'Jangkrikman',
+          profilePicUrl : 'https://scontent-sin6-1.xx.fbcdn.net/v/t1.0-9/483974_560790623950281_1785245479_n.jpg?oh=090209cb5b089d0f5133d8211050bcc6&oe=5966C542'
         }
       }
     ];
@@ -198,10 +194,8 @@ describe('state index', function() {
     })
 
     boardsInstances = boardsDataFromServer.map(boardFactory.create);
-
+    
     fakeBoardService = {
-      getTop : sinon.stub().withArgs().returns(boardsDataFromServerPromise),
-      getNew : sinon.stub().withArgs().returns(boardsDataFromServerPromise),
       getCollaborated : sinon.stub().withArgs().returns(boardsDataFromServerPromise),
       getMy : sinon.stub().withArgs().returns(boardsDataFromServerPromise),
       getBookmarked : sinon.stub().withArgs().returns(boardsDataFromServerPromise),
@@ -238,98 +232,52 @@ describe('state index', function() {
   })
   
   describe('boards field', function() {
-
     it('on first time, it is empty array', function() {
       expect(indexState.getBoards()).to.be.empty;
     })
 
     describe('can be added by calling board service', function() {
-      
-      it('when current board category is "top-board", when invoke getBoardsFromServer(), it will call boardService.getTop()', function(done) {
-        
-        indexState.setCurrentBoardCategory(indexState.boardCategory.TOP);
-        
-        expect(indexState.getCurrentBoardCategory()).to.equal(indexState.boardCategory.TOP);
-
-        indexState.getBoardsFromServer()
-          .then(function() {
-            expect(fakeBoardService.getTop.called).to.be.true;
-            expect(indexState.getBoards().length).to.equal(boardsDataFromServer.length);
-            done();
-          });
-      })
-
       it('when current board category is "my-board", when invoke getBoardsFromServer(), it will call boardService.getMy()', function(done) {
-        
         indexState.setCurrentBoardCategory(indexState.boardCategory.MY);
-        
         expect(indexState.getCurrentBoardCategory()).to.equal(indexState.boardCategory.MY);
-
         indexState.getBoardsFromServer()
           .then(function() {
             expect(fakeBoardService.getMy.called).to.be.true;
-            expect(indexState.getBoards().length).to.equal(boardsDataFromServer.length);
             done();
           });
-      })
+      });
 
       it('when current board category is "collaborated-board", when invoke getBoardsFromServer(), it will call boardService.getCollaborated()', function(done) {
-        
         indexState.setCurrentBoardCategory(indexState.boardCategory.COLLABORATED);
-        
         expect(indexState.getCurrentBoardCategory()).to.equal(indexState.boardCategory.COLLABORATED);
-
         indexState.getBoardsFromServer()
           .then(function() {
             expect(fakeBoardService.getCollaborated.called).to.be.true;
-            expect(indexState.getBoards().length).to.equal(boardsDataFromServer.length);
             done();
           });
-      })
+      });
 
       it('when current board category is "bookmarked-board", when invoke getBoardsFromServer(), it will call boardService.getBookmarked()', function(done) {
-        
         indexState.setCurrentBoardCategory(indexState.boardCategory.BOOKMARKED);
-        
         expect(indexState.getCurrentBoardCategory()).to.equal(indexState.boardCategory.BOOKMARKED);
-
         indexState.getBoardsFromServer()
           .then(function() {
             expect(fakeBoardService.getBookmarked.called).to.be.true;
-            expect(indexState.getBoards().length).to.equal(boardsDataFromServer.length);
             done();
           });
-      })
-
-      it('when current board category is "new-board", when invoke getBoardsFromServer(), it will call boardService.getNew()', function(done) {
-        
-        indexState.setCurrentBoardCategory(indexState.boardCategory.NEW);
-        
-        expect(indexState.getCurrentBoardCategory()).to.equal(indexState.boardCategory.NEW);
-
-        indexState.getBoardsFromServer()
-          .then(function() {
-            expect(fakeBoardService.getNew.called).to.be.true;
-            expect(indexState.getBoards().length).to.equal(boardsDataFromServer.length);
-            done();
-          });
-      })
+      });
 
       it('when current board category is "all-board", when invoke getBoardsFromServer(), it will call boardService.getAll()', function(done) {
-        
         indexState.setCurrentBoardCategory(indexState.boardCategory.ALL);
-        
         expect(indexState.getCurrentBoardCategory()).to.equal(indexState.boardCategory.ALL);
-
         indexState.getBoardsFromServer()
           .then(function() {
             expect(fakeBoardService.getAll.called).to.be.true;
-            expect(indexState.getBoards().length).to.equal(boardsDataFromServer.length);
             done();
           });
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('getPageData() function, will return promise, when resolved, will change the following field', function() {
     
