@@ -9,25 +9,20 @@ module.exports = (() => {
     user
       .setName(data.creator.displayName)
       .setProfilePictureUrl(data.creator.profilePicUrl);
-
-    const arguers = data.arguers.map(arguer => {
-      const arguerInstance = new User();
+    
+    const arguers = data.arguers.map((arguer) => {
+      return (new User())
+        .setName(arguer.displayName)
+        .setProfilePictureUrl(arguer.profilePicUrl);
       
-      arguerInstance
-        .setName(collaborator.name)
-        .setProfilePictureUrl(collaborator.profilePicUrl);
-
-      return arguerInstance;
-    })
+    });
 
     board
       .setId(data._id)
       .setTitle(data.title)
       .setDescription(data.description)
-      .setTopic(data.topic)
       .setUser(user)
       .setTags(data.tags)
-      .setArguers(arguers)
       .setCountOfReason(data.countOfReason)
       .setCountOfObjection(data.countOfObjection)
       .setCountOfRebuttal(data.countOfRebuttal)
@@ -37,8 +32,10 @@ module.exports = (() => {
       .setIsPublished(data.published)
       .setDownvote(data.countOfDownvote)
       .setUpvote(data.countOfUpvote)
-      .setSlug(data.slug);
-      
+      .setSlug(data.slug)
+      .setIsCurrentUserBookmarked(data.isBookmarkedByCurrentUser)
+      .setArguers(arguers);
+
     return board;
   }
 
