@@ -2,7 +2,7 @@ const mongoose = require('../mongoose');
 const User = require('../models/user');
 const { async, await } = require('asyncawait');
 const config = require('../../config.json');
-const dbName = config.dbName;
+const dbName = config.dbName[process.env.NODE_ENV];
 
 (async(() => {
     mongoose.connect('mongodb://localhost/' + dbName);

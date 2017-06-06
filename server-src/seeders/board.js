@@ -5,7 +5,7 @@ const Board = require('../models/board');
 const User = require('../models/user');
 const { async, await } = require('asyncawait');
 const config = require('../../config.json');
-const dbName = config.dbName;
+const dbName = config.dbName[process.env.NODE_ENV];
 
 const createUser = () => {
   const user = new User({
