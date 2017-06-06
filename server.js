@@ -14,8 +14,8 @@ const authRoute = require('./server-src/routes/auth')();
 const profileRoute = require('./server-src/routes/profile')();
 
 const config = require('./config.json');
-const appPort = config.appPort;
-const dbName = config.dbName;
+const appPort = config.appPort[process.env.NODE_ENV];
+const dbName = config.dbName[process.env.NODE_ENV];
 const secretSession = config.secretSession;
 
 mongoose.connect('mongodb://localhost/' + dbName);
