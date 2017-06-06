@@ -27,7 +27,6 @@ const createBoard = (creatorId) => {
     title : title,
     description : faker.lorem.sentences(),
     tags : [faker.lorem.word(), faker.lorem.word(), faker.lorem.word()],
-    topic : faker.lorem.word(),
     published : true,
     slug : slug
   });
@@ -37,7 +36,7 @@ const createBoard = (creatorId) => {
 
 (async(() => {
   
-  const db = mongoose.connect('mongodb://localhost/' + dbName);
+  mongoose.connect('mongodb://localhost/' + dbName);
 
   const boardSavePromises = [];
   const newUser = await(createUser());
