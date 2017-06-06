@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3 v-if="status === 'create'">Buat Argument</h3>
+        <h3 v-if="status === 'edit'">Ubah Argument</h3>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group" :class="{'has-error': showTitleError }">
+            <label class="control-label" for="title">Kesimpulan (sisa {{ remainingTitleCharacter }} karakter)</label>
+            <textarea data-vv-as="Kesimpulan" name="title" v-validate data-vv-rules="required|min:5|max:280" v-model="title" class="form-control" rows="4" placeholder="Isikan sebuah kesimpulan seperti 'Bumi itu datar'"></textarea>
+            <p class="text-danger" v-if="showTitleError">{{ errors.first('title') }}</p>
+        </div>
+        <div class="form-group" :class="{'has-error': showDescriptionError }">
+            <label class="control-label" for="description">Deskripsi (sisa {{ remainingDescriptionCharacter }} karakter)</label>
+            <textarea data-vv-as="Deskripsi" v-validate data-vv-rules="required|min:100|max:1000" name="description" v-model="description" class="form-control" rows="5" placeholder="Isikan deskripsi"></textarea>
+            <p class="text-danger" v-if="showDescriptionError">{{ errors.first('description') }}</p>
+        </div>
+        <div class="form-group" :class="{'has-error': showTagsError }">
+            <label for="" class="control-label">
+                Tags
+            </label>
+            <input-tag-component  ref="inputTags" :placeholder="'tag'" :on-change="handleTagsInputChange" :tags="tags"></input-tag-component>
+            <p class="text-danger" v-if="showTagsError">{{ getErrorMessage('tags') }}</p>
+            <span>Untuk menambah tags, masukan kata lalu tekan <strong>enter</strong></span>
+        </div>
+        <div class="form-group">
+            <div class="pull-right">
+                <button v-if="status === 'create' && !isLoading && canSendData" class="btn btn-success save-argumen-button" @click="sendData()">Simpan Argumen</button>
+                <button v-if="status === 'edit' && !isLoading && canSendEditedData" class="btn btn-success save-argumen-button" @click="sendData()">Ubah Argumen</button>
+                <button v-if="status === 'create' && !canSendData" class="btn btn-success save-argumen-button" disabled>Simpan Argumen</button>
+                <button v-if="status === 'edit' && !canSendEditedData" class="btn btn-success save-argumen-button" disabled>Ubah Argumen</button>
+                <button v-if="isLoading" class="btn btn-default save-argumen-button save-argumen-button-loading "></button>
+                <button v-if="!isLoading" class="btn btn-danger" @click="onClose()">Tutup</button>
+                <button v-if="isLoading" class="btn btn-danger" disabled>Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
