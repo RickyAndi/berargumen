@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "dev": "NODE_ENV=development nodemon server.js",
+    "prod": "NODE_ENV=production nodemon server.js",
     "testclient": "./node_modules/karma/bin/karma start karma.conf.js",
     "testserver": "./node_modules/mocha/bin/mocha server-src/tests/**"
   },
