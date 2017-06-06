@@ -8,10 +8,8 @@ var state = {
   },
   boardCategory : {
     MY : 'my-board',
-    TOP : 'top-board',
     COLLABORATED : 'collaborated-board',
     BOOKMARKED :'bookmarked-board',
-    NEW : 'new-board',
     ALL : 'all-board'
   },
   errors : {
@@ -73,10 +71,8 @@ var state = {
     let serviceRequestMapping = {};
 
     serviceRequestMapping[this.boardCategory.MY] = this.services.board.getMy;
-    serviceRequestMapping[this.boardCategory.TOP] = this.services.board.getTop;
     serviceRequestMapping[this.boardCategory.COLLABORATED] = this.services.board.getCollaborated;
     serviceRequestMapping[this.boardCategory.BOOKMARKED] = this.services.board.getBookmarked;
-    serviceRequestMapping[this.boardCategory.NEW] = this.services.board.getNew;
     serviceRequestMapping[this.boardCategory.ALL] = this.services.board.getAll;
     
     const request = serviceRequestMapping[this.getCurrentBoardCategory()];
@@ -84,33 +80,31 @@ var state = {
     return request(data);
   },
   loadMoreBoards() {
-    if(this.isAnyNextPage() && !this.isLoading('board')) {
-      if(!this.isLoading('loadMore')) {
-        this.setLoading('loadMore', true);
-        
-        const query = {
-          page : this.getNextPageToLoad(),
-          topic : this.getCurrentBoardTopic(),
-          query : this.getSearchQuery()
-        }
-
-        this.getBoardsFromServer(query)
-          .then((boards) => {
-            
-            this.setLoading('loadMore', false);
-            this.setError('loadMore', false);
-
-            const boardInstances = boards.docs.map(this.factories.board.create);
-            this.addBoards(boardInstances);
-
-            this.decideThatThereAreNextPage(boards);
-
-          })
-          .catch((error) => {
-            this.setLoading('loadMore', false);
-            this.setError('loadMore', true);
-          });
+    if(this.isAnyNextPage() && !this.isLoading('board') && !this.isLoading('loadMore')) {
+      this.setLoading('loadMore', true);
+      
+      const query = {
+        page : this.getNextPageToLoad(),
+        topic : this.getCurrentBoardTopic(),
+        query : this.getSearchQuery()
       }
+
+      this.getBoardsFromServer(query)
+        .then((boards) => {
+          
+          this.setLoading('loadMore', false);
+          this.setError('loadMore', false);
+
+          const boardInstances = boards.docs.map(this.factories.board.create);
+          this.addBoards(boardInstances);
+
+          this.decideThatThereAreNextPage(boards);
+
+        })
+        .catch((error) => {
+          this.setLoading('loadMore', false);
+          this.setError('loadMore', true);
+        });
     }
   },
   setUserLoginState(isLoggedIn) {
@@ -234,6 +228,37 @@ var state = {
     } else {
       this.setAnyNextPage(true);
       this.setNextPageToLoad(nextPage)
+    }
+  },
+  setBoardPublicationState(index, bool) {
+    this.boards[index].setIsPublished(bool);
+  },
+  currentUserUpvoteBoard(index) {
+    this.boards[index].currentUserDoUpvote();
+  },
+  currentUserDownvoteBoard(index) {
+    this.boards[index].currentUserDoDownvote();
+  },
+  currentUserNotUpvoteBoard(index) {
+    this.boards[index].currentUserDoRemoveUpvote();
+  },
+  currentUserNotDownvoteBoard(index) {
+    this.boards[index].currentUserDoRemoveDownvote();
+  },
+  currentUserBookmarkBoard(index) {
+    this.boards[index].setIsCurrentUserBookmarked(true);
+  },
+  currentUserRemoveBookmarkBoard(index) {
+    this.boards[index].setIsCurrentUserBookmarked(false);
+  },
+  removeBoard(index) {
+    this.boards.splice(index, 1);
+  },
+  getBoardDataToEdit(index) {
+    return {
+      title : this.boards[index].getTitle(),
+      description : this.boards[index].getDescription(),
+      tags : this.boards[index].getTags()
     }
   }
 }
