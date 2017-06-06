@@ -13,7 +13,8 @@ Berargumen is real time argument mapping platform, this software still in hard d
 - run `gulp copy-css`
 - make sure nodemon installed globally
 - fill config.json with proper data
-- run `npm start`
+- to start server in development mode run `npm run dev`
+- to start server in production mode run `npm run prod`
 
 # test
 
