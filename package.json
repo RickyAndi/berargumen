@@ -26,6 +26,7 @@
     "ejs": "^2.5.6",
     "express": "^4.15.0",
     "express-session": "^1.15.2",
+    "express-validator": "^3.2.0",
     "faker": "^4.1.0",
     "get-increment-decrement": "^1.0.1",
     "gulp": "^3.9.1",
@@ -47,6 +48,7 @@
     "mocha": "^3.2.0",
     "mongoose": "^4.8.6",
     "mongoose-paginate": "^5.0.3",
+    "mongoose-slug-generator": "^1.0.4",
     "nprogress": "^0.2.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
@@ -58,16 +60,22 @@
     "slugify": "^1.1.0",
     "stringify": "^5.1.0",
     "taggle": "^1.11.2",
+    "vee-validate": "^2.0.0-rc.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "vue": "^2.2.1",
     "vue-infinite-scroll": "^2.0.1",
+    "vue-input-tag": "0.0.11",
+    "vueify": "^9.4.1",
     "watchify": "^3.9.0"
   },
   "devDependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "gulp-debug": "^3.1.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.1",
-    "karma-phantomjs-launcher": "^1.0.4"
+    "karma-phantomjs-launcher": "^1.0.4",
+    "vue-template-compiler": "^2.3.3"
   },
   "browser": {
     "vue": "vue/dist/vue.common"
