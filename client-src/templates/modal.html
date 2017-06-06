@@ -1,8 +1,9 @@
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" v-bind:id="uniqId">
-	<div class="modal-dialog" v-bind:class="classObject" role="document">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
+	<div class="modal-dialog" :class="classObject" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h4>{{ title }}</h4>
+			<div v-if="normalizedOptions().withHeader" class="modal-header">
+				<button v-if="normalizedOptions().withCloseButton" type="button" class="close" @click="hide()" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4>{{ normalizedOptions().title }}</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
