@@ -6,9 +6,83 @@
 	<title>Berargumen</title>
 
 	<link rel="stylesheet" href="/builds/css/bootstrap.css">
-	<link rel="stylesheet" href="/builds/css/taggle.css">
 	
 	<style>
+
+		.board-buttons-box, .menu-button-box {
+            margin-top: 0px;
+        }
+
+		.vue-input-tag-wrapper {
+			background-color: #fff;
+			border: 1px solid #ccc;
+			overflow: hidden;
+			padding-left: 4px;
+			padding-top: 4px;
+			cursor: text;
+			text-align: left;
+			-webkit-appearance: textfield;
+		}
+
+		.vue-input-tag-wrapper .input-tag {
+			background-color: #cde69c;
+			border-radius: 2px;
+			border: 1px solid #a5d24a;
+			color: #638421;
+			display: inline-block;
+			font-size: 13px;
+			font-weight: 400;
+			margin-bottom: 4px;
+			margin-right: 4px;
+			padding: 3px;
+		}
+
+		.vue-input-tag-wrapper .input-tag .remove {
+			cursor: pointer;
+			font-weight: bold;
+			color: #638421;
+		}
+
+		.vue-input-tag-wrapper .input-tag .remove:hover {
+			text-decoration: none;
+		}
+
+		.vue-input-tag-wrapper .input-tag .remove::before {
+			content: " x";
+		}
+
+		.vue-input-tag-wrapper .new-tag {
+			background: transparent;
+			border: 0;
+			color: #777;
+			font-size: 13px;
+			font-weight: 400;
+			margin-bottom: 6px;
+			margin-top: 1px;
+			outline: none;
+			padding: 4px;
+			padding-left: 0;
+			width: 80px;
+			margin-left: 8px;
+		}
+
+		.vue-input-tag-wrapper.read-only {
+			cursor: default;
+		}
+
+		.load-board-loading {
+			margin-top: 30px;
+		}
+
+		.save-argumen-button-loading {
+			background: url('/builds/css/small-circle-loading.gif') no-repeat 50% 50%;
+		}
+		
+		.save-argumen-button {
+			width: 135px;
+			height: 35px;
+		}
+		
 		footer{
 			background: rgb(23,30,38);
 			padding: 60px 20px;
@@ -40,6 +114,17 @@
 		
 		[v-cloak] {
 			display: none;
+		}
+
+		.bookmark-disabled-button {
+			border: solid 1px blue;
+			color : blue;
+			background-color: white;
+		}
+
+		.bookmark-disabled-button:hover {
+			background-color: blue;
+			color : white;
 		}
 
 		.btn-success-basic, .upvote-button, .upvote-disabled-button {
@@ -105,27 +190,12 @@
 			width: 100%;
 		}
 
-		.tags-input input {
-			width: 100% !important;
-			float:right !important; 
-		}
-		
-		.taggle_placeholder {
-			left: 25px !important;
-			color: #949494;
-		}
-
-		#tagsinput {
-			padding-top: 7px !important;
-			overflow-y: auto;
-		}
-
 		.taggle_list {
 			padding-left : 5px;
 		}
 
 		body {
-			background-color: white;
+			background-color: #fafafa;
 			padding-top: 65px;
 		}
 
@@ -135,10 +205,7 @@
 		}
 
 		.board-list-container {
-			max-height: 800px;
-			overflow-y: scroll;
 			padding : 5px;
-			margin-top: 30px;
 			margin-bottom: 50px;
 		}
 
@@ -150,7 +217,6 @@
 			margin-top: 5px;
 		}
 		
-
 		.footer {
 			margin-top: 25px;
 			background-color: #101010;
@@ -179,7 +245,21 @@
 		.panel-menu {
 			border: solid 1px black;
 		}
+
+		.panel-menu * {
+			font-family: 'q_serif',Georgia,Times,"Times New Roman",serif;
+		}
 		
+		.panel-menu .panel-heading {
+			font-weight: bold;
+			font-size: 18px;
+		}
+
+		.panel-menu .panel-body button {
+			font-weight: bold;
+			font-size: 15px;
+		}
+
 		.board-panel {
 			min-height: 250px;
 		}
@@ -187,18 +267,23 @@
 		[v-cloak] {
 			display: none;
 		}
-		/*
-		.fade-enter-active, .fade-leave-active {
-		  transition: opacity .1s
-		}
-		*/
 
-		.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+		.fade-leave-active {
+		  transition: opacity 0s
+		}
+		
+		.fade-enter-active {
+		  transition: opacity .5s
+		}
+		
+		.fade-enter, .fade-leave-to {
 		  opacity: 0
 		}
 
 		.create-argument-button {
         	margin-top: 5px;
+			font-size: 15px;
+            font-weight: 700;
         }
 
 		.creator-image-box-text {
@@ -208,8 +293,13 @@
             margin-left: 10px;
         }
 
+		.creator-image-box-text * {
+        	font-family: 'q_serif',Georgia,Times,"Times New Roman",serif;
+			font-size: 15px;
+        }
+
         .creator-image-box {
-            margin-top: 20px;
+            margin-top: 0px;
         }
 
 		.creator-image {
@@ -219,58 +309,25 @@
         }
 
 		.search-input {
-            width: 500px !important;
+            width: 590px !important;
             margin-left: 150px !important;
         }
 
-		 .reason-count {
-            color : black;
-            border: solid 2px green;
-            padding: 3px;
-            border-radius: 5px;
-            font-size: 13px;
-        }
-
-        .objection-count {
-            color : black;
-            border: solid 2px red;
-            padding: 3px;
-            border-radius: 5px;
-            font-size: 13px;
-        }
-
-        .rebuttal-count {
-            color : black;
-            border: solid 2px orange;
-            padding: 3px;
-            border-radius: 5px;
-            font-size: 13px;
-        }
-
-        .board-spec {
+		.board-spec {
             display : inline-block;
-            font-weight : 800;
+            font-weight : 600;
+			font-size:11px;
         }
 
-        .arguers-count {
-            color : black;
-            border: solid 2px blue;
-            padding: 3px;
-            border-radius: 5px;
-            font-size: 13px;
-        }
-
-		.board-description-box {
-			margin-top: 20px;
+        .board-description-box {
+			margin-top: 10px;
 		}
-
-		.menu-button-box {
-			margin-top: 20px;
-		}
-
-		.board-description p {
-            letter-spacing: 1px;
-            font-weight: 500;
+		
+		.board-description {
+            font-family: 'q_serif',Georgia,Times,"Times New Roman",serif;
+            font-weight: normal;
+            font-size: 16px;
+            tab-size: 4;
         }
 
 		.brand {
@@ -279,12 +336,54 @@
             color: white;
         }
 
-		.board-title-box {
-			margin-top: 20px;
+		.board-title-box * {
+			margin-top: 5px;
+			font-size: 18px;
+			font-family: 'q_serif',Georgia,Times,"Times New Roman",serif;
+			font-weight: bold;
+			color: black;
+		}
+
+		.board-title-box q {
+			text-decoration: none;
 		}
 
 		.warn-user-to-login {
-			margin-top: 100px;
+			margin-top: 30px;
+		}
+
+		.category-choice {
+			position : fixed;
+			width: 300px;
+		}
+
+		h3 {
+			margin-top: 10px !important;
+		}
+
+		.warn {
+			font-family: 'q_serif',Georgia,Times,"Times New Roman",serif;
+			font-weight: bold;
+		}
+
+		.bookmark-button {
+			color: blue;
+			background-color: white;
+		}
+		
+		.bookmark-button:hover {
+			color: white;
+			background-color: blue;
+		}
+
+		.remove-bookmark-button {
+			color: white;
+			background-color: blue;
+		}
+
+		.remove-bookmark-button:hover {
+			color: blue;
+			background-color: white;
 		}
 	</style>
 
@@ -308,7 +407,9 @@
 
 				<div class="navbar-collapse collapse" id="navbar-collapsible">
 					<div class="navbar-form navbar-right btn-group">
-						<button @click="showLoginModal()" class="btn btn-default">Login</button>
+						<button v-cloak v-if="!isUserLogin" @click="showLoginModal()" class="btn btn-default">Login</button>
+						<button v-cloak v-if="isUserLogin" @click="goToProfilePage()" class="btn btn-success">Profile</button>
+						<button v-cloak v-if="isUserLogin" @click="logout()" class="btn btn-danger">Keluar</button>
 					</div>
 
 					<form class="navbar-form">
@@ -323,15 +424,14 @@
 			</div>
 		</nav>
 		
-		<!-- new -->
 		<div class="container">
-			<div class="row">
+			<div class="row" v-infinite-scroll="loadMoreBoards" infinite-scroll-disabled="isLoadMoreLoading">
 				<div class="col-md-3">
-					<div class="row">
+					<div class="row category-choice">
 						<div class="col-md-12">
 							<div class="panel panel-default panel-menu">
 								<div class="panel-heading">
-									Pilih Kategori Board
+									Pilih Kategori Argumen
 								</div>
 								<div class="panel-body">
 									<button 
@@ -357,7 +457,7 @@
 										class="btn btn-block btn-sm"
 									>
 										<strong>
-											<span>Argumen yang saya buat</span>
+											<span>Argumen yang kau buat</span>
 										</strong>
 									</button>
 									<button 
@@ -370,7 +470,7 @@
 										class="btn btn-block btn-sm"
 									>
 										<strong>
-											<span>Argumen yang saya ikuti</span>
+											<span>Argumen yang kau ikuti</span>
 										</strong>
 									</button>
 									<button 
@@ -383,34 +483,37 @@
 										class="btn btn-block btn-sm"
 									>
 										<strong>
-											<span>Argumen yang saya tandai</span>
+											<span>Argumen yang kau tandai</span>
 										</strong>
 									</button>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-12">
-							<topic-selector
-								@topic-selected="onTopicSelected"
-							>
-							</topic-selector>
 						</div>
 					</div>
 				</div>
 				<div class="col-md-7">
 					<div class="row">
 						<div class="col-md-12">
-							<div class="create-board-box">
-								<h4><strong>Buat Argumen Anda !!!!</strong></h4>
-								<button v-cloak v-if="!isUserLogin" @click="createBoardButNotLoggedIn()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
-								<button v-cloak v-if="isUserLogin" @click="showSubmitBoardModalToCreate()" class="btn btn-success btn-sm create-argument-button">Buat Argumen</button>
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<div class="greet-box" style="margin-top: 20px;">
+										<img v-if="!isUserLogin" style="display:inline-block; margin:0px;" width="30px" height="30px" class="img-circle creator-image" src="/builds/css/not-logged-in.png" alt="">
+										<img v-if="isUserLogin" style="display:inline-block; margin:0px;" width="30px" height="30px" class="img-circle creator-image" :src="currentUserProfilePicUrl" alt="">
+										<span style="position: relative; bottom: 13px; display:inline-block;">
+											<span v-if="!isUserLogin" style="font-size:30px; font-weight:700;"><strong>Hei Orang Asing !!!!</strong></span>
+											<span v-if="isUserLogin" style="font-size:30px; font-weight:700;"><strong>Hei {{ currentUserName }} !!!!</strong></span>
+										</span>
+									</div>
+									<button v-cloak v-if="!isUserLogin" @click="createBoardButNotLoggedIn()" class="btn btn-success btn-sm create-argument-button">Klik, Buat Argumenmu !!!</button>
+									<button v-cloak v-if="isUserLogin" @click="showSubmitBoardModalToCreate()" class="btn btn-success btn-sm create-argument-button">Klik, Buat Argumenmu !!!</button>
+								</div>
 							</div>
                     	</div>
 						<transition name="fade">
 							<div class="col-md-12 text-center warn-user-to-login" v-if="noBoardsToBeViewed && !isLoadBoardLoading && !warnThatUserCannotViewBoardExceptAllBoard">
 								<div class="panel panel-default">
 									<div class="panel-body">
-										<h4>Kelihatannya tidak ada argumen yang bisa ditampilkan</h4>
+										<h4 class="warn">Kelihatannya tidak ada argumen yang bisa ditampilkan</h4>
 									</div>
 								</div>
 							</div>
@@ -419,9 +522,9 @@
 							<div class="col-md-12 text-center warn-user-to-login" v-cloak v-if="warnThatUserCannotViewBoardExceptAllBoard">
 								<div class="panel panel-default">
 									<div class="panel-body">
-										<h4 v-if="privateState.getCurrentBoardCategory() == 'my-board'">Login, untuk melihat argumen yang anda buat</h4>
-										<h4 v-if="privateState.getCurrentBoardCategory() == 'collaborated-board'">Login, untuk melihat argumen yang anda ikuti</h4>
-										<h4 v-if="privateState.getCurrentBoardCategory() == 'bookmarked-board'">Login, untuk melihat argumen yang anda tandai</h4>
+										<h4 class="warn" v-if="privateState.getCurrentBoardCategory() == 'my-board'">Login, untuk melihat argumen yang kau buat</h4>
+										<h4 class="warn" v-if="privateState.getCurrentBoardCategory() == 'collaborated-board'">Login, untuk melihat argumen yang kau ikuti</h4>
+										<h4 class="warn" v-if="privateState.getCurrentBoardCategory() == 'bookmarked-board'">Login, untuk melihat argumen yang kau tandai</h4>
 										<div style="margin-top: 20px;">
 											<button class="btn btn-success" @click="showLoginModal()"><strong>Login</strong></button>
 										</div>	
@@ -431,9 +534,7 @@
 						</transition>
 						<div class="col-md-12" v-cloak>
 							<div 
-								class="row board-list-container" 
-								v-infinite-scroll="loadMoreBoards"
-								infinite-scroll-disabled="isLoadMoreLoading"
+								class="row board-list-container"
 								v-show="viewBoardsLists && !warnThatUserCannotViewBoardExceptAllBoard && !noBoardsToBeViewed"
 							>
 								<transition-group name="fade">
@@ -445,120 +546,140 @@
 										@vote-but-not-logged-in="voteButNotLoggedIn"
 										@show-collaborator="showCollaborators"
 										@change-board="showSubmitBoardModalToEdit"
-										@delete-board="showDeleteModalConfirmation"
+										@delete-board="handleDeleteBoard"
 										@publish-board="publishBoard"
 										@unpublish-board="unpublishBoard"
+										@upvote="upvote"
+										@downvote="downvote"
+										@remove-upvote="removeUpvote"
+										@remove-downvote="removeDownvote"
+										@bookmark="bookmark"
+										@remove-bookmark="removeBookmark"
 										v-if="viewBoardsLists && !warnThatUserCannotViewBoardExceptAllBoard"
 									>
 									</board-component>
 								</transition-group>
 								<transition name="fade">
 									<div v-cloak class="col-md-12 text-center" v-if="viewLoadBoardError">
-										<h4>Sorry ada error .. :(</h4>
+										<h4 class="warn">Maaf, ada error.</h4>
 									</div>
 								</transition>
 								<transition name="fade">
 									<div v-cloak class="col-md-12 text-center" v-if="viewLoadMoreLoading">
-										<h4>Tunggu sebentar, masih mengambil data .. :)</h4>
+										<h4 class="warn">Tunggu sebentar, masih mengambil data.</h4>
 									</div>
 								</transition>
 								<transition name="fade">
 									<div v-cloak class="col-md-12 text-center" v-if="viewThereIsNoBoardsToLoad && !noBoardsToBeViewed">
-										<h4>Dah mentok bro, jangan scroll terus :( </h4>
+										<h4 class="warn">Maaf, sudah mencapai dasar.</h4>
 									</div>
 								</transition>
 								<transition name="fade">
 									<div v-cloak class="col-md-12 text-center" v-if="viewLoadMoreError">
-										<h4>Sorry bro, ada error, bentar, jangan scroll terus .. :/</h4>
+										<h4 class="warn">Maaf, ada error</h4>
 									</div>
 								</transition>
 							</div>
 						</div>
 						<transition name="fade">
-							<div v-cloak v-if="isLoadBoardLoading" class="col-md-12 text-center" style="padding: 50px;">
+							<div v-cloak v-if="isLoadBoardLoading" class="col-md-12 text-center load-board-loading">
 								<img width="140px" height="140px" src="/builds/css/circle-loading.gif" alt="">
 							</div>
 						</transition>
 					</div>
 				</div>
-			</div>
-		</div>
+				<div class="col-md-2">
 
-		<modal-login v-cloak v-bind:title="'Login'" v-bind:uniq-id="'login-modal'" ref="loginModal">
-			<div class="col-md-12" v-if="messages.loginModal.error">
-				<div class="alert alert-danger">
-				  	<strong>{{ messages.loginModal.content }}</strong>
 				</div>
 			</div>
+		</div>
+		
+		<modal-login v-cloak 
+			:options="{
+				withHeader: false, 
+				title: '', 
+				withCloseButton: false, 
+				backdrop: null, 
+				keyboard: true,
+				modalSize: 'medium'
+			}"
+			ref="loginModal"
+		>
 			<div class="col-md-12">
 				<div class="row">
-					<div class="col-md-3"></div>
-					<div class="col-md-6">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<span style="font-size: 15px;">Anda bisa login dengan : </span>
-							</div>
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-md-12">
-										<button @click="facebookLogin()" class="btn btn-primary btn-block">Facebook</button>	
+					<div class="col-md-12 text-center">
+						<h1 style="font-weight:bold;">Berargumen</h1>
+						<h4>Sebuah platform untuk sharing argumen</h4>
+					</div>
+					<div style="margin-top:20px;" class="col-md-12 text-center" v-if="messages.loginModal.error">
+						<div class="alert alert-danger">
+							<strong>{{ messages.loginModal.content }}</strong>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12">
+												<button @click="facebookLogin()" class="btn btn-primary btn-block">
+													<span style="font-size: 17px; font-weight:bold;">Masuk Dengan Facebook</span>
+												</button>	
+											</div>
+											<div class="col-md-12">
+												<button @click="localLogin()" class="btn btn-default btn-block">
+													<span style="font-size: 17px; font-weight:bold;">Admin login</span>
+												</button>	
+											</div>
+										</div>	
 									</div>
-								</div>	
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-md-3"></div>
 				</div>
 			</div>
 		</modal-login>
 		
-		<modal-collaborators v-cloak v-bind:title="'Kolaborator'" v-bind:uniq-id="'collaborators-modal'" ref="collaboratorsModal">
-			<collaborators-view v-bind:collaborators="privateState.getCollaboratorsToBeShown()"></collaborators-view>
-		</modal-collaborators>
-
 		<modal-submit-board
 			v-cloak
-			v-bind:title="meta.submitBoardModalTitle" 
-			v-bind:uniq-id="'edit-board-modal'" 
+			:options="{
+				withHeader: false, 
+				title: '', 
+				withCloseButton: false, 
+				backdrop: 'static', 
+				keyboard: true,
+				modalSize: 'medium'
+			}"
 			ref="submitBoardModal"
-			@on-hidden="resetBoardFormState"
+			@on-hidden="onArgumenSubmitFormHide"
 		>
 			<div class="col-md-12">
-				<div class="form-group">
-					<label for="">Kesimpulan</label>
-					<textarea class="form-control" rows="2" placeholder="Isikan sebuah kesimpulan seperti 'Bumi itu datar'"></textarea>
-				</div>
-				<div class="form-group">
-					<label for="comment">Deskripsi</label>
-					<textarea class="form-control" rows="5" placeholder="Isikan deskripsi"></textarea>
-				</div>
-			</div>
-			<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-12">
-						<strong>Tags</strong>
-					</div>
-					<div class="col-md-12" style="margin-top: 5px;">
-						<div style="border: solid 1px #cccccc; min-height: 150px;" id="tagsinput"></div>	
-					</div>
-					<div class="col-md-12">
-						<span>Untuk menambah tags, masukan kata lalu tekan <strong>enter</strong></span>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-12" style="margin-top: 10px;">
-				<div class="pull-right">
-					<button class="btn btn-success">Simpan Argumen</button>
-					<button class="btn btn-danger" @click="hideSubmitBoardModal()">Tutup</button>
-				</div>
+				<argument-form
+					@on-send-data="saveArgument"
+					@on-close="closeSubmitBoardModal"
+					ref="argumentForm"
+				>
+				</argument-form>
 			</div>
 		</modal-submit-board>
 
-		<modal-delete-board-confirmation v-bind:modal-size="'small'" v-cloak v-bind:title="'Hapus Board ?'" v-bind:uniq-id="'delete-board-confirmation-modal'" ref="deleteBoardConfirmationModal">
+		<modal-delete-board-confirmation 
+			:options="{
+				withHeader: true, 
+				title: 'Hapus Argument ?', 
+				withCloseButton: false, 
+				backdrop: 'static', 
+				keyboard: false,
+				modalSize: 'small'
+			}"
+			ref="deleteBoardConfirmationModal"
+		>
 			<div class="col-md-12">
 				<div class="pull-right">
-					<button class="btn btn-danger">Ya</button>
-					<button class="btn btn-success">Tidak</button>
+					<button @click="deleteBoard" class="btn btn-danger">Ya</button>
+					<button @click="hideDeleteModalConfirmation" class="btn btn-success">Tidak</button>
 				</div>
 			</div>
 		</modal-delete-board-confirmation>
