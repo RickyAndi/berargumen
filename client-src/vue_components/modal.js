@@ -1,57 +1,60 @@
 const Vue = require('vue');
 const Modal = require('bootstrap.native').Modal;
+const { isNull } = require('../../shared/utils/comparing');
 
 const modal = Vue.component('modal', {
   template : require('../templates/modal.html'),
   props : {
-    title : {
-      type : String,
-      required : true
+    options: {
+      type: Object,
+      required: true
     },
-    uniqId : {
-      type : String,
-      required : true
-    },
-    modalSize : {
-      type : String
-    }
   },
   data() {
     return {
       modal : null,
-      $modal : null
     }
   },
   methods : {
     show : function() {
-      this.modal.show();
+      this.modal.show({
+        backdrop: 'static',
+        keyboard: false
+      });
     },
     hide : function() {
       this.modal.hide();
     },
     onHidden : function() {
       this.$emit('on-hidden');
+    },
+    normalizedOptions() {
+      return {
+        modalSize: isNull(this.options.modalSize) ? 'large' : this.options.modalSize,
+        backdrop: isNull(this.options.backdrop) ? null : this.options.backdrop,
+        keyboard: isNull(this.options.keyboard) ? false : this.options.keyboard,
+        title: isNull(this.options.title) ? '' : this.options.title,
+        withHeader: isNull(this.options.withHeader) ? true : this.options.withHeader,
+        withCloseButton: isNull(this.options.withCloseButton) ? true : this.options.withCloseButton
+      }
     }
   },
   mounted() {
-    const vm = this;
-    
-    vm.$modal = document.getElementById(vm.uniqId);
-    
-    vm.modal = new Modal(vm.$modal, {});
+    this.modal = new Modal(this.$el, {
+      backdrop: this.normalizedOptions().backdrop,
+      keyboard: this.normalizedOptions().keyboard
+    });
 
-    vm.$modal.addEventListener('hidden.bs.modal', function() {
-      vm.onHidden();
-    })
+    this.$el.addEventListener('hidden.bs.modal', () => this.onHidden());
   },
   computed : {
     classObject() {
       return {
-        'modal-lg' : this.modalSize == 'large' || this.modalSize == null,
-        'modal-md' : this.modalSize == 'medium',
-        'modal-sm' : this.modalSize == 'small'
+        'modal-lg' : this.normalizedOptions().modalSize === 'large',
+        'modal-md' : this.normalizedOptions().modalSize === 'medium',
+        'modal-sm' : this.normalizedOptions().modalSize === 'small'
       }
-    }
+    },
   }
 });
 
