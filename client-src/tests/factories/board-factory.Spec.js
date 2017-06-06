@@ -9,52 +9,33 @@ describe('Board Factory', function() {
 
   before(function() {
     boardData = {
-      id : 'abcdefghijklmn',
+      _id : 'abcdefghijklmn',
       title : 'aku adalah anak gembala',
       description : 'lorem ipsum dolor',
-      user : {
-        name : 'Budiman',
-        profilePictureUrl : 'http://google.com',
-        getName : function() {
-          return this.name;
-        },
-        getProfilePictureUrl : function() {
-          return this.profilePictureUrl;
-        }
+      creator : {
+        displayName : 'Budiman',
+        profilePicUrl : 'http://google.com',
       },
       countOfReason : 10,
       countOfObjection : 20,
       countOfRebuttal : 25,
-      collaborators :  [
+      arguers :  [
         {
-          name : 'Budiman',
-          profilePictureUrl : 'http://google.com',
-          getName : function() {
-            return this.name;
-          },
-          getProfilePictureUrl : function() {
-            return this.profilePictureUrl;
-          }   
+          displayName : 'Budiman',
+          profilePicUrl : 'http://google.com',
         },
         {
-          name : 'Ilham Mansiz',
-          profilePictureUrl : 'http://duckduckgo.com',
-          getName : function() {
-            return this.name;
-          },
-          getProfilePictureUrl : function() {
-            return this.profilePictureUrl;
-          }
+          displayName : 'Ilham Mansiz',
+          profilePicUrl : 'http://duckduckgo.com',
         },
       ],
       tags : ['aku', 'adalah', 'anak'],
-      topic : 'Universe',
-      downvote : 100,
-      upvote : 20,
+      countOfdownvote : 100,
+      countOfupvote : 20,
       isCurrentUserUpvoted : false,
       isCurrentUserDownvoted : false,
       isBelongToCurrentUser : false,
-      isPublished : true
+      published : true
     };
 
     boardInstance = boardFactory.create(boardData);
@@ -66,7 +47,7 @@ describe('Board Factory', function() {
   })
 
   it('board instance get right id', function() {
-    expect(boardInstance.getId()).to.equal(boardData.id);
+    expect(boardInstance.getId()).to.equal(boardData._id);
   })
 
   it('board instance get right title', function() {
@@ -78,24 +59,24 @@ describe('Board Factory', function() {
   })
 
   it('board instance get right user', function() {
-    expect(boardInstance.getUserName()).to.equal(boardData.user.name);
-    expect(boardInstance.getUserProfilePictureUrl()).to.equal(boardData.user.profilePictureUrl);
+    expect(boardInstance.getUserName()).to.equal(boardData.creator.displayName);
+    expect(boardInstance.getUserProfilePictureUrl()).to.equal(boardData.creator.profilePicUrl);
   })
   
-  describe('board factory can set collaboratos', function() {
-    it('board instance get right number of collaborators', function() {
-      expect(boardInstance.getCountOfCollaborators()).to.equal(boardData.collaborators.length);
+  describe('board factory can set arguers', function() {
+    it('board instance get right number of arguers', function() {
+      expect(boardInstance.getCountOfArguers()).to.equal(boardData.arguers.length);
     })
 
-    it('board instance get right data of users', function() {
+    it('board instance get right data of arguers', function() {
       
-      const collaborators = boardInstance.getCollaborators();
+      const arguers = boardInstance.getArguers();
+      console.log(arguers)
+      expect(arguers[0].getName()).to.equal(boardData.arguers[0].displayName);
+      expect(arguers[0].getProfilePictureUrl()).to.equal(boardData.arguers[0].profilePicUrl);
       
-      expect(collaborators[0].getName()).to.equal(boardData.collaborators[0].getName());
-      expect(collaborators[0].getProfilePictureUrl()).to.equal(boardData.collaborators[0].getProfilePictureUrl());
-      
-      expect(collaborators[1].getName()).to.equal(boardData.collaborators[1].getName());
-      expect(collaborators[1].getProfilePictureUrl()).to.equal(boardData.collaborators[1].getProfilePictureUrl());
+      expect(arguers[1].getName()).to.equal(boardData.arguers[1].displayName);
+      expect(arguers[1].getProfilePictureUrl()).to.equal(boardData.arguers[1].profilePicUrl);
       
     })
   })
@@ -116,10 +97,6 @@ describe('Board Factory', function() {
     expect(boardInstance.getTags()).to.equal(boardData.tags);
   })
 
-  it('board instance get right topic', function() {
-    expect(boardInstance.getTopic()).to.equal(boardData.topic);
-  })
-
   it('board instance get rigth count of upvote', function() {
     expect(boardInstance.getUpvote()).to.equal(boardData.upvote);
   })
@@ -136,8 +113,8 @@ describe('Board Factory', function() {
     expect(boardInstance.currentUserDownvoted()).to.equal(boardData.isCurrentUserDownvoted);  
   })
 
-  it('board instance get right value of isPublished', function() {
-    expect(boardInstance.published()).to.equal(boardData.isPublished);
+  it('board instance get right value of published', function() {
+    expect(boardInstance.published()).to.equal(boardData.published);
   })
 
   it('board instance get right value of isBelongToCurrentUser', function() {
