@@ -4,23 +4,23 @@ const GrabToPan = require('./libs/grab-to-pan');
 require('jsplumb/dist/js/jsplumb');
 
 new Vue({
-    el: '#app',
-    data : {
-        zoomScale : 10,
-        mapValue : {
-          "1" : 0.1,
-          "2" : 0.2,
-          "3" : 0.3,
-          "4" : 0.4,
-          "5" : 0.5,
-          "6" : 0.6,
-          "7" : 0.7,
-          "8" : 0.8,
-          "9" : 0.9,
-          "10" : 1,
-        },
-        selectedCardIndex : null
+  el: '#app',
+  data : {
+    zoomScale : 10,
+    mapValue : {
+      "1" : 0.1,
+      "2" : 0.2,
+      "3" : 0.3,
+      "4" : 0.4,
+      "5" : 0.5,
+      "6" : 0.6,
+      "7" : 0.7,
+      "8" : 0.8,
+      "9" : 0.9,
+      "10" : 1,
     },
+    selectedCardIndex : null
+  },
     methods : {
       chooseThis(index) {
         this.selectedCardIndex = index;
