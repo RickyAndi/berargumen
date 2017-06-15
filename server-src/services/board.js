@@ -107,6 +107,14 @@ module.exports = (()=> {
     }));
   });
 
+  const findBySlug = async((boardSlug, populate) => {
+    return await(Board.findOne({ 
+      slug: boardSlug, 
+      published: true,
+      deleted: false
+    }).populate(populate))
+  });
+
   return {
     create : baseService.create,
     paginate : paginate,
@@ -116,6 +124,7 @@ module.exports = (()=> {
     findById : findById,
     addArguer : addArguer,
     delete : deleteBoard,
-    edit : edit
+    edit : edit,
+    findBySlug: findBySlug
   }
 })();
