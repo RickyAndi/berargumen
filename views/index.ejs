@@ -500,7 +500,7 @@
 										<img v-if="!isUserLogin" style="display:inline-block; margin:0px;" width="30px" height="30px" class="img-circle creator-image" src="/builds/css/not-logged-in.png" alt="">
 										<img v-if="isUserLogin" style="display:inline-block; margin:0px;" width="30px" height="30px" class="img-circle creator-image" :src="currentUserProfilePicUrl" alt="">
 										<span style="position: relative; bottom: 13px; display:inline-block;">
-											<span v-if="!isUserLogin" style="font-size:30px; font-weight:700;"><strong>Hei Orang Asing !!!!</strong></span>
+											<span v-if="!isUserLogin" style="font-size:30px; font-weight:700;"><strong>Hei User Baru !!!!</strong></span>
 											<span v-if="isUserLogin" style="font-size:30px; font-weight:700;"><strong>Hei {{ currentUserName }} !!!!</strong></span>
 										</span>
 									</div>
@@ -508,7 +508,7 @@
 									<button v-cloak v-if="isUserLogin" @click="showSubmitBoardModalToCreate()" class="btn btn-success btn-sm create-argument-button">Klik, Buat Argumenmu !!!</button>
 								</div>
 							</div>
-                    	</div>
+            </div>
 						<transition name="fade">
 							<div class="col-md-12 text-center warn-user-to-login" v-if="noBoardsToBeViewed && !isLoadBoardLoading && !warnThatUserCannotViewBoardExceptAllBoard">
 								<div class="panel panel-default">
@@ -544,7 +544,6 @@
 										:index="index"
 										:is-current-user-logged-in="isUserLogin"
 										@vote-but-not-logged-in="voteButNotLoggedIn"
-										@show-collaborator="showCollaborators"
 										@change-board="showSubmitBoardModalToEdit"
 										@delete-board="handleDeleteBoard"
 										@publish-board="publishBoard"
@@ -627,6 +626,13 @@
 													<span style="font-size: 17px; font-weight:bold;">Masuk Dengan Facebook</span>
 												</button>	
 											</div>
+											<% if (developmentMode) { %>
+											<div class="col-md-12">
+												<button @click="localLogin()" class="btn btn-default btn-block">
+													<span style="font-size: 17px; font-weight:bold;">Admin login</span>
+												</button>	
+											</div>
+											<% } %>
 										</div>	
 									</div>
 								</div>
@@ -653,7 +659,7 @@
 			<div class="col-md-12">
 				<argument-form
 					@on-send-data="saveArgument"
-					@on-close="closeSubmitBoardModal"
+					@on-close="hideSubmitBoardModal"
 					ref="argumentForm"
 				>
 				</argument-form>
