@@ -104,6 +104,10 @@ new Vue({
     getBoards() {
       return this.privateState.goToPage(1);
     },
+    showLoginModalWithNoError() {
+      this.messages.loginModal.error = false;
+      this.showModal('loginModal');
+    },
     showLoginModal() {
       this.messages.loginModal.error = false;
       this.$refs.loginModal.show();
@@ -111,27 +115,16 @@ new Vue({
     voteButNotLoggedIn(args) {
       this.messages.loginModal.error = true;
       this.messages.loginModal.content = this.errorMessages[args.voteType];
-      this.$refs.loginModal.show(); 
-    },
-    showCollaborators(args) {
-      this.privateState.emptyCollaboratorToBeShown();
-      this.privateState.addCollaboratorsToBeShown(this.privateState.getBoards()[args.index].getCollaborators());
-      this.$refs.collaboratorsModal.show();
+      this.showModal('loginModal');
     },
     createBoardButNotLoggedIn() {
       this.messages.loginModal.error = true;
       this.messages.loginModal.content = 'Whoops, untuk membuat argumen anda harus login terlebih dahulu';
-      this.$refs.loginModal.show();
-    },
-    showSubmitBoardModal() {
-      this.$refs.submitBoardModal.show();
-    },
-    hideSubmitBoardModal() {
-      this.$refs.submitBoardModal.hide();
+      this.showModal('loginModal');
     },
     showSubmitBoardModalToCreate() {
       this.$refs.argumentForm.setStatus('create');
-      this.showSubmitBoardModal();
+      this.showModal('submitBoardModal');
     },
     showSubmitBoardModalToEdit(args) {
       this.$refs.argumentForm.setStatus('edit');
@@ -141,7 +134,7 @@ new Vue({
       this.boardIdToBeEdited = args.boardId;
       this.boardIndexToBeEdited = args.index;
       
-      this.showSubmitBoardModal();
+      this.showModal('submitBoardModal');
     },
     publishBoard(args) {
       const boardId = args.boardId;
@@ -235,18 +228,15 @@ new Vue({
     handleDeleteBoard(args) {
       this.boardIdToBeDeleted = args.boardId;
       this.boardIndexToBeDeleted = args.index;
-      this.showDeleteModalConfirmation();
+      this.showModal('deleteBoardConfirmationModal');
     },
     deleteBoard() {
       const toBeDeletedBoardId = this.boardIdToBeDeleted;
       return boardService.deleteBoard(toBeDeletedBoardId)
         .then((data) => {
-          this.hideDeleteModalConfirmation();
+          this.hideModal('deleteBoardConfirmationModal');
           this.privateState.removeBoard(this.boardIndexToBeDeleted);
         })
-    },
-    closeSubmitBoardModal() {
-       this.hideSubmitBoardModal();
     },
     saveArgument(argumentData) {
       this.$refs.argumentForm.setLoading(true);
@@ -256,7 +246,7 @@ new Vue({
           .then((data) => {
             console.log(data)
             this.$refs.argumentForm.setLoading(false);
-            this.hideSubmitBoardModal();
+            this.hideModal('deleteBoardConfirmationModal');
             window.open('/board/' + data.slug);
           })
           .catch((error) => {
@@ -271,12 +261,20 @@ new Vue({
       return boardService.editBoard(this.boardIdToBeEdited, argumentData)
         .then((data) => {
           this.$refs.argumentForm.setLoading(false);
-          this.hideSubmitBoardModal();
+          this.hideModal('deleteBoardConfirmationModal');
         })
         .catch((error) => {
-          console.log(error)
           this.$refs.argumentForm.setLoading(false);
         })
+    },
+    showModal(modalName) {
+      this.$refs[modalName].show();
+    },
+    hideModal(modalName) {
+      this.$refs[modalName].hide();
+    },
+    hideSubmitBoardModal() {
+      this.hideModal('submitBoardModal');
     }
   },
   computed : {
