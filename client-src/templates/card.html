@@ -1,30 +1,61 @@
 <div 
-	@click="selectThisCard()" 
-	v-bind:class="classObject"
-	v-bind:style="styleObject"
-	class="panel" 
-	style="position: absolute; width: 300px;"
-	v-bind:id="card.getId()"
->
-    <div v-if="card.getType() != 'co-premise-connector'"  class="panel-heading">
-        <div class="row">
-            <div class="col-md-6">
-            	<span class="card-type">{{ cardTextType }}</span>
-            </div>
-            <div class="col-md-6">
-                
-            </div>
+  :class="classObject" 
+  @click="onCardClicked"
+  @mousedown="onCardClicked"
+  v-tap="onCardClicked"
+  @mouseover="onCardMouseOver"
+  @mouseleave="onCardMouseLeave"
+  :id="card.id" 
+  class="panel card" 
+  :style="styleObject">
+
+  <div v-if="!isSubAlasanConnector" class="panel-heading">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="pull-left">
+          <strong><span class="card-title">{{ cardTitle }}</span></strong>
         </div>
+        <div v-if="showFooter" class="pull-right">
+          <button @click="changeThisCard" class="btn btn-success btn-xs" title="Ubah argumen ini">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </button>
+          <button @click="deleteThisCard" class="btn btn-danger btn-xs" title="Hapus argumen ini">
+            <span class="glyphicon glyphicon-remove"></span>
+          </button>
+        </div>
+      </div>
     </div>
-    <div v-if="card.getType() != 'co-premise-connector'" class="panel-body" style=" min-height: 100px;">
-        <p class="card-content">{{ card.getContent() }}</p>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div v-if="!isSubAlasanConnector" class="col-md-12">
+        <p class="card-content">{{ card.content }}</p>
+      </div>
+      <div v-else class="col-md-12">
+        <span class="dan"><strong>Dan</strong></span>
+      </div>
     </div>
-    
-    <div v-if="card.getType() == 'co-premise-connector'" class="panel-body co-premise-connector">
-        Konektor
+  </div>
+  <div v-if="showFooter && !isSubAlasanConnector" class="panel-footer">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="pull-left">
+          <button @click="createRelationCard('reason')" title="Buat alasan (reason) untuk argumen ini" class="btn btn-primary btn-xs">Alasan</button>
+          <button @click="createRelationCard('objection')" title="Buat keberatan (objection) untuk argumen ini" v-if="card.type !== 'objection' && card.type !== 'rebuttal'" class="btn btn-danger btn-xs">Keberatan</button>
+          <button @click="createRelationCard('rebuttal')" title="Buat bantahan (rebuttal) untuk argumen ini" v-if="card.type === 'objection' || card.type === 'rebuttal'" class="btn btn-warning btn-xs">Bantahan</button>
+          <button @click="createRelationCard('sub-reason-connector')" title="Buat sub alasan untuk argumen ini" class="btn btn-success btn-xs">Sub Alasan</button>
+        </div>
+      </div>
     </div>
-    
-    <div v-if="card.getType() != 'co-premise-connector'"  class="panel-footer">
-    	<button class="btn btn-default btn-xs card-creator-name">{{ card.getCreatorName() }}</button>
+  </div>
+  <div v-if="showFooter && isSubAlasanConnector" class="panel-footer">
+    <div class="row">
+      <div class="col-md-12">
+        <button @click="createRelationCard('sub-reason')" class="btn btn-success btn-block btn-xs" title="Buat Sub Alasan">Sub Alasan</button>
+        <button @click="deleteThisCard" class="btn btn-danger btn-xs btn-block" title="Hapus argumen ini">
+          Hapus
+        </button>
+      </div>
     </div>
+  </div>
 </div>
